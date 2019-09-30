@@ -22,14 +22,15 @@ def createDB(path=None):
     music_sql = """CREATE TABLE IF NOT EXISTS music (
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
-        trackNumber TEXT NOT NULL
+        trackNumber TEXT NOT NULL,
+        fileName TEXT NOT NULL
         )
         """
     atmosphere_sql = """CREATE TABLE IF NOT EXISTS atmospheres (
         scenes TEXT PRIMARY KEY
         )
         """
-    association_sql = """CREATE TABLE IF NOT EXISTS atmosphere_index (
+    association_sql = """CREATE TABLE IF NOT EXISTS atmosphereIndex (
         scenes TEXT,
         music_id INTEGER,
         PRIMARY KEY (scenes, music_id)
