@@ -24,7 +24,7 @@ def createDB(path=None):
         title TEXT NOT NULL,
         album TEXT NOT NULL,
         trackNumber TEXT NOT NULL,
-        fileName TEXT NOT NULL
+        pathToFile TEXT NOT NULL
         )
         """
     atmosphere_sql = """CREATE TABLE IF NOT EXISTS atmospheres (
@@ -35,9 +35,9 @@ def createDB(path=None):
         scenes TEXT,
         music_id INTEGER,
         PRIMARY KEY (scenes, music_id)
-        FOREIGN KEY(scenes) REFERENCES music_sql(id) ON DELETE CASCADE,
+        FOREIGN KEY(scenes) REFERENCES atmosphere_sql(scenes) ON DELETE CASCADE,
         FOREIGN KEY(music_id) REFERENCES
-            atmosphere_sql(scenes) ON DELETE CASCADE
+            music_sql(id) ON DELETE CASCADE
         )
         """
     connection.execute(music_sql)
