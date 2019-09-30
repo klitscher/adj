@@ -22,6 +22,7 @@ def createDB(path=None):
     music_sql = """CREATE TABLE IF NOT EXISTS music (
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
+        album TEXT NOT NULL,
         trackNumber TEXT NOT NULL,
         fileName TEXT NOT NULL
         )
