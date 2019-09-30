@@ -10,14 +10,37 @@ def createDB(path=None):
     path: Optional argument to already created database
     """
 
+    """ Forcing foreign key constraints """
+
     if path is None:
         connection = sqlite3.connect('./AmbientDJ_DB.sqlite3')
     else:
         connection = sqlite3.connect(path)
-    cur = conection.cursor()
+
+    connection.execute('PRAGMA foreign_keys = ON')
+
     music_sql = """CREATE TABLE IF NOT EXISTS music (
-        id integer PRIMARY KEY,
-        title text NOT NULL,
-        trackNumber text NOTNULL,
+        id INTEGER PRIMARY KEY,
+        title TEXT NOT NULL,
+        trackNumber TEXT NOT NULL
+        )
         """
-    
+    atmosphere_sql = """CREATE TABLE IF NOT EXISTS atmospheres (
+        scenes TEXT PRIMARY KEY
+        )
+        """
+    association_sql = """CREATE TABLE IF NOT EXISTS atmosphere_index (
+        scenes TEXT,
+        music_id INTEGER,
+        PRIMARY KEY (scenes, music_id)
+        FOREIGN KEY(scenes) REFERENCES music_sql(id) ON DELETE CASCADE,
+        FOREIGN KEY(music_id) REFERENCES
+            atmosphere_sql(scenes) ON DELETE CASCADE
+        )
+        """
+    connection.execute(music_sql)
+    connection.execute(atmosphere_sql)
+    connection.execute(association_sql)
+
+    connection.commit()
+    connection.close()
