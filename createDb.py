@@ -5,7 +5,7 @@ import os
 import sqlite3
 
 
-def createDB(path=os.path.join(adj.path, 'AmbientDJ_DB.sqlite3')):
+def createDb(path=os.path.join(adj.path, 'AmbientDJ_DB.sqlite3')):
     """Function to create a databases with required tables
     path: Optional argument to already created database
     """
