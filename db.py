@@ -16,7 +16,7 @@ def createDb(path=os.path.join(adj.path, 'AmbientDJ_DB.sqlite3')):
     connection.execute('PRAGMA foreign_keys = ON')
 
     music_sql = """CREATE TABLE IF NOT EXISTS music (
-        id INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         album TEXT NOT NULL,
         trackNumber TEXT NOT NULL,
