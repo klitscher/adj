@@ -19,21 +19,20 @@ def createDb(path=os.path.join(adj.path, 'AmbientDJ_DB.sqlite3')):
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         album TEXT NOT NULL,
-        trackNumber TEXT NOT NULL,
-        pathToFile TEXT NOT NULL
+        number INTEGER NOT NULL,
+        path TEXT NOT NULL
         )
         """
     mood_sql = """CREATE TABLE IF NOT EXISTS moods (
         mood TEXT PRIMARY KEY
         )
         """
-    association_sql = """CREATE TABLE IF NOT EXISTS moodIndex (
+    association_sql = """CREATE TABLE IF NOT EXISTS music_moods (
         mood TEXT,
-        music_id INTEGER,
-        PRIMARY KEY (mood, music_id)
+        track INTEGER,
+        PRIMARY KEY (mood, track)
         FOREIGN KEY(mood) REFERENCES moods ON DELETE CASCADE,
-        FOREIGN KEY(music_id) REFERENCES
-            music(id) ON DELETE CASCADE
+        FOREIGN KEY(track) REFERENCES music ON DELETE CASCADE
         )
         """
     connection.execute(music_sql)
