@@ -82,14 +82,14 @@ def init(card: int=-1) -> ctypes.CDLL:
     imported Bass library. The first argument is the index of the sound output
     device, but using -1 will initialize the default device.
     """
-    if dj.platform.os == 'cygwin':
-        bass = ctypes.CDLL(os.path.join(dj.path, 'bass.dll'))
-    elif dj.platform.os == 'mac':
-        bass = ctypes.CDLL(os.path.join(dj.path, 'libbass.dynlib'))
-    elif dj.platform.os == 'windows':
-        bass = ctypes.WinDLL(os.path.join(dj.path, 'bass.dll'))
+    if adj.platform.os == 'cygwin':
+        bass = ctypes.CDLL(os.path.join(adj.path, 'bass.dll'))
+    elif adj.platform.os == 'mac':
+        bass = ctypes.CDLL(os.path.join(adj.path, 'libbass.dynlib'))
+    elif adj.platform.os == 'windows':
+        bass = ctypes.WinDLL(os.path.join(adj.path, 'bass.dll'))
     else:
-        bass = ctypes.CDLL(os.path.join(dj.path, 'libbass.so'))
+        bass = ctypes.CDLL(os.path.join(adj.path, 'libbass.so'))
     if not bass.BASS_Init(card, 48000, 0, 0, None):
         error = bass.BASS_ErrorGetCode()
         raise BassErrors.init[error][0](BassErrors.init[error][1])
@@ -121,7 +121,7 @@ class Music:
         contents to determine the file type, so inaccruate extensions are
         allowed.
         """
-        if dj.platform.os == 'windows' or dj.platform.os == 'cygwin':
+        if adj.platform.os == 'windows' or dj.platform.os == 'cygwin':
             path = path.encode('UTF-16')[2:]
             utf16 = 0x80000000
         else:
