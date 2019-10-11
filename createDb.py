@@ -1,22 +1,18 @@
-#!/usr/bin/python3
 """Module to create a database"""
 
-
+import adj
+import os
 import sqlite3
 
 
-def createDB(path=None):
+def createDB(path=os.path.join(adj.path, 'AmbientDJ_DB.sqlite3')):
     """Function to create a databases with required tables
     path: Optional argument to already created database
     """
 
+    connection = sqlite3.connect(path)
+
     """ Forcing foreign key constraints """
-
-    if path is None:
-        connection = sqlite3.connect('./AmbientDJ_DB.sqlite3')
-    else:
-        connection = sqlite3.connect(path)
-
     connection.execute('PRAGMA foreign_keys = ON')
 
     music_sql = """CREATE TABLE IF NOT EXISTS music (
@@ -27,21 +23,21 @@ def createDB(path=None):
         pathToFile TEXT NOT NULL
         )
         """
-    atmosphere_sql = """CREATE TABLE IF NOT EXISTS atmospheres (
-        scenes TEXT PRIMARY KEY
+    mood_sql = """CREATE TABLE IF NOT EXISTS moods (
+        mood TEXT PRIMARY KEY
         )
         """
-    association_sql = """CREATE TABLE IF NOT EXISTS atmosphereIndex (
-        scenes TEXT,
+    association_sql = """CREATE TABLE IF NOT EXISTS moodIndex (
+        mood TEXT,
         music_id INTEGER,
-        PRIMARY KEY (scenes, music_id)
-        FOREIGN KEY(scenes) REFERENCES atmosphere_sql(scenes) ON DELETE CASCADE,
+        PRIMARY KEY (mood, music_id)
+        FOREIGN KEY(mood) REFERENCES moods ON DELETE CASCADE,
         FOREIGN KEY(music_id) REFERENCES
-            music_sql(id) ON DELETE CASCADE
+            music(id) ON DELETE CASCADE
         )
         """
     connection.execute(music_sql)
-    connection.execute(atmosphere_sql)
+    connection.execute(mood_sql)
     connection.execute(association_sql)
 
     connection.commit()
