@@ -15,7 +15,7 @@ import sys
 
 
 @enum.unique
-class BassErrors(enum.IntEnum):
+class BassErrors (enum.IntEnum):
     """Enumeration of error codes documented by the Bass library."""
     OK = 0
     MEM = 1
@@ -73,11 +73,11 @@ BassErrors.openFile = collections.defaultdict(lambda: (Exception, 'unknown'), {
     BassErrors.FORMAT: (TypeError, 'unsupported sample format in music file'),
     BassErrors.MEM: (MemoryError, 'out of memory opening music file'),
 })
-    
+
 
 def init(card: int=-1) -> ctypes.CDLL:
     """Initialize the audio system.
-    
+
     This function is called when this module is imported and returns the
     imported Bass library. The first argument is the index of the sound output
     device, but using -1 will initialize the default device.
@@ -94,18 +94,18 @@ def init(card: int=-1) -> ctypes.CDLL:
         error = bass.BASS_ErrorGetCode()
         raise BassErrors.init[error][0](BassErrors.init[error][1])
     return bass
-    
-    
+
+
 class Music:
     """A music file hooked up to the computer's sound hardware.
-    
+
     Music objects support only playing, pausing, and stopping, since the
     application demands nothing more. However, since this object holds an open
     file and some additional resources in Bass, you should call the stop
     method explicitly when done playing to avoid leaking.
     """
-    _handle: int = 0
-    playing: bool = False
+    _handle = 0
+    playing = False
 
     def __del__(self):
         """Free the resources used by Bass for this song when destroying it."""
@@ -115,13 +115,13 @@ class Music:
 
     def __init__(self, path: str):
         """Open a music file and prepare it for playing.
-        
+
         The path to the file is converted to UTF-16 on Windows and UTF-8 on
         other platforms, allowing non-ASCII file names. Bass uses the file
         contents to determine the file type, so inaccruate extensions are
         allowed.
         """
-        if dj.platform == 'windows' or dj.platform == 'cygwin':
+        if dj.platform.os == 'windows' or dj.platform.os == 'cygwin':
             path = path.encode('UTF-16')[2:]
             utf16 = 0x80000000
         else:
@@ -130,16 +130,16 @@ class Music:
         self._handle = bass.BASS_StreamCreateFile(False, path, 0, 0, utf16)
         if self._handle == 0:
             error = bass.BASS_ErrorGetCode()
-            raise BaseErrors.openFile[error][0](BassErrors.openFile[error][1])
+            raise BassErrors.openFile[error][0](BassErrors.openFile[error][1])
         self.playing = False
-        
+
     def pause(self):
         """Pause the song, allowing it to continue where it was paused."""
         if not self.playing:
             return
         bass.BASS_ChannelPause(self._handle)
         self.playing = False
-        
+
     def play(self):
         """Play/resume the song."""
         if self._handle == 0:
@@ -151,7 +151,7 @@ class Music:
 
     def stop(self):
         """Stop playing this song and free its resources.
-        
+
         Once stopped, the song cannot be started/resumed.
         """
         bass.BASS_ChannelStop(self._handle)
