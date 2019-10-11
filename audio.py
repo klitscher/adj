@@ -8,7 +8,7 @@ This module's job is to provide a high-level interface to Bass's functions.
 
 import ctypes
 import collections
-import dj
+import adj
 import enum
 import os.path
 import sys
