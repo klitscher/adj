@@ -9,6 +9,35 @@ UNICODE  = 0x80000000
 
 
 @enum.unique
+class DeviceFlags (enum.IntEnum):
+    """Flags describing the status of a sound card."""
+    ENABLED  = 0X1
+    DEFAULT  = 0X2
+    INIT     = 0X4
+    LOOPBACK = 0X8
+
+
+@enum.unique
+class DeviceTypes (enum.IntEnum):
+    """Bit fields used to distinguish sound card types.
+
+    These flags are all shifted right by 4 for use with the SoundCardInfo
+    struct."""
+    MASK        = 0xFF00000
+    NETWORK     = 0X0100000
+    SPEAKERS    = 0X0200000
+    LINE        = 0X0300000
+    HEADPHONES  = 0X0400000
+    MICROPHONE  = 0X0500000
+    HEADSET     = 0X0600000
+    HANDSET     = 0X0700000
+    DIGITAL     = 0X0800000
+    SPDIF       = 0X0900000
+    HDMI        = 0X0A00000
+    DISPLAYPORT = 0X4000000
+
+
+@enum.unique
 class Errors (enum.IntEnum):
     """Enumeration of error codes documented by the Bass library."""
     OK       = 0
@@ -140,6 +169,19 @@ SyncCallback = ctypes.CFUNCTYPE(
 )
 
 
+class SoundCardInfo (ctypes.Structure):
+    """The structure used to represent a sound device in Bass."""
+    _fields_ = (
+        ('name', ctypes.c_char_p),
+        ('driver', ctypes.c_char_p),
+        ('enabled', ctypes.c_bool, 1),
+        ('default', ctypes.c_bool, 2),
+        ('init', ctypes.c_bool, 3),
+        ('loopback', ctypes.c_bool, 4),
+        ('flags', ctypes.c_uint32, 28)
+    )
+
+
 class WinGuid (ctypes.Structure):
     """Windows's low-level structure representing a GUID."""
     _fields_ = (
@@ -192,6 +234,11 @@ def loadLib() -> ctypes.CDLL:
     bass.BASS_ChannelStop.argtypes = (ctypes.c_uint32,)
     bass.BASS_ErrorGetCode.restype = ctypes.c_int
     bass.BASS_ErrorGetCode.argtypes = ()
+    bass.BASS_GetDeviceInfo.restype = ctypes.c_bool
+    bass.BASS_GetDeviceInfo.argtypes = (
+        ctypes.c_uint32,
+        ctypes.POINTER(SoundCardInfo)
+    )
     bass.BASS_Init.restype = ctypes.c_bool
     bass.BASS_Init.argtypes = (
         ctypes.c_int,

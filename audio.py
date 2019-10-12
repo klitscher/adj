@@ -6,12 +6,25 @@ the library is a compiled object file, it's a little difficult to use directly.
 This module's job is to provide a high-level interface to Bass's functions.
 """
 
+import adj
 from adj.basslib import *
 import collections.abc
-import adj
+import itertools
+import typing
 
 
-def initCard(bass: ctypes.CDLL, card: int=-1) -> ctypes.CDLL:
+def enumerateDevices() -> typing.List[SoundCardInfo]:
+    """Get a list of output devices attached to the computer."""
+    ret = []
+    for i in itertools.count():
+        card = SoundCardInfo()
+        if bass.BASS_GetDeviceInfo(i, card):
+            ret.append(card)
+        else:
+            return ret
+
+
+def initCard(card: int=-1) -> ctypes.CDLL:
     """Initialize the audio system.
 
     The first argument is the index of the sound output device, but using -1
@@ -120,4 +133,4 @@ class Music:
 
 
 bass = loadLib()
-initCard(bass)
+initCard()
