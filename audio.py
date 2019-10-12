@@ -8,6 +8,7 @@ This module's job is to provide a high-level interface to Bass's functions.
 
 import ctypes
 import collections
+import collections.abc
 import adj
 import enum
 import os.path
@@ -104,6 +105,14 @@ class Music:
     file and some additional resources in Bass, you should call the stop
     method explicitly when done playing to avoid leaking.
     """
+    _Callback = ctypes.CFUNCTYPE(
+        None,
+        ctypes.c_uint,
+        ctypes.c_uint,
+        ctypes.c_uint,
+        ctypes.c_void_p
+    )
+    _callback = None
     _handle = 0
     playing = False
 
@@ -121,7 +130,7 @@ class Music:
         contents to determine the file type, so inaccruate extensions are
         allowed.
         """
-        if adj.platform.os == 'windows' or dj.platform.os == 'cygwin':
+        if adj.platform.os == 'windows' or adj.platform.os == 'cygwin':
             path = path.encode('UTF-16')[2:]
             utf16 = 0x80000000
         else:
@@ -132,6 +141,28 @@ class Music:
             error = bass.BASS_ErrorGetCode()
             raise BassErrors.openFile[error][0](BassErrors.openFile[error][1])
         self.playing = False
+        
+    def onEnd(self, function: collections.abc.Callable):
+        """Register callback to be called when the song reaches the end.
+        
+        Only one callback can be set per Music object. If you call this twice,
+        the first callback will be unset and replaced with the new one. It's
+        recommended to call this method only before the song starts playing
+        to guarantee no race condition. The callback is also removed by Bass
+        once it runs."""
+        if self._callback is not None:
+            bass.BASS_ChannelRemoveSync(self._handle, self._callback.handle)
+        def callback(event, song, _, obj):
+            self._callback = None
+            function(self)
+        self._callback = Music._Callback(callback)
+        self._callback.handle = bass.BASS_ChannelSetSync(
+            self._handle,
+            0x40000002,
+            0,
+            self._callback,
+            None
+        )
 
     def pause(self):
         """Pause the song, allowing it to continue where it was paused."""
