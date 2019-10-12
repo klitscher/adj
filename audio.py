@@ -6,95 +6,20 @@ the library is a compiled object file, it's a little difficult to use directly.
 This module's job is to provide a high-level interface to Bass's functions.
 """
 
-import ctypes
-import collections
+from adj.basslib import *
 import collections.abc
 import adj
-import enum
-import os.path
-import sys
 
 
-@enum.unique
-class BassErrors (enum.IntEnum):
-    """Enumeration of error codes documented by the Bass library."""
-    OK = 0
-    MEM = 1
-    FILEOPEN = 2
-    DRIVER = 3
-    BUFLOST = 4
-    HANDLE = 5
-    FORMAT = 6
-    POSITION = 7
-    INIT = 8
-    START = 9
-    SSL = 10
-    ALREADY = 14
-    NOCHAN = 18
-    ILLTYPE = 19
-    ILLPARAM = 20
-    NO3D = 21
-    NOEAX = 22
-    DEVICE = 23
-    NOPLAY = 24
-    FREQ = 25
-    NOTFILE = 27
-    NOHW = 29
-    EMPTY = 31
-    NONET = 32
-    CREATE = 33
-    NO_FX = 34
-    NOTAVAIL = 37
-    DECODE = 38
-    DX = 39
-    TIMEOUT = 40
-    FILEFORM = 41
-    SPEAKER = 42
-    VERSION = 43
-    CODEC = 44
-    ENDED = 45
-    BUSY = 46
-    UNKNOWN = -1
-
-BassErrors.init = collections.defaultdict(lambda: (Exception, 'unknown'), {
-    BassErrors.DX: (OSError, 'no Bass-compatible audio driver installed'),
-    BassErrors.DEVICE: (ValueError, 'invalid sound card index number'),
-    BassErrors.ALREADY: (TypeError, 'Bass is already initialized'),
-    BassErrors.DRIVER: (OSError, 'no available driver'),
-    BassErrors.BUSY: (OSError, 'something else has control of the sound card'),
-    BassErrors.FORMAT: (OSError, 'specified frequency not supported'),
-    BassErrors.MEM: (MemoryError, 'out of memory initializing Bass')
-})
-
-BassErrors.openFile = collections.defaultdict(lambda: (Exception, 'unknown'), {
-    BassErrors.INIT: (TypeError, 'Bass has not been initialized'),
-    BassErrors.FILEOPEN: (OSError, 'could not open music file'),
-    BassErrors.FILEFORM: (ValueError, 'music file format not recognized'),
-    BassErrors.CODEC: (TypeError, 'no codec installed for music file'),
-    BassErrors.FORMAT: (TypeError, 'unsupported sample format in music file'),
-    BassErrors.MEM: (MemoryError, 'out of memory opening music file'),
-})
-
-
-def init(card: int=-1) -> ctypes.CDLL:
+def initCard(bass: ctypes.CDLL, card: int=-1) -> ctypes.CDLL:
     """Initialize the audio system.
 
-    This function is called when this module is imported and returns the
-    imported Bass library. The first argument is the index of the sound output
-    device, but using -1 will initialize the default device.
+    The first argument is the index of the sound output device, but using -1
+    will initialize the default device.
     """
-    if adj.platform.os == 'cygwin':
-        bass = ctypes.CDLL(os.path.join(adj.path, 'bass.dll'))
-    elif adj.platform.os == 'mac':
-        bass = ctypes.CDLL(os.path.join(adj.path, 'libbass.dynlib'))
-    elif adj.platform.os == 'windows':
-        bass = ctypes.WinDLL(os.path.join(adj.path, 'bass.dll'))
-    else:
-        bass = ctypes.CDLL(os.path.join(adj.path, 'libbass.so'))
     if not bass.BASS_Init(card, 48000, 0, 0, None):
         error = bass.BASS_ErrorGetCode()
-        raise BassErrors.init[error][0](BassErrors.init[error][1])
-    return bass
+        raise Errors.init[error][0](Errors.init[error][1])
 
 
 class Music:
@@ -105,13 +30,6 @@ class Music:
     file and some additional resources in Bass, you should call the stop
     method explicitly when done playing to avoid leaking.
     """
-    _Callback = ctypes.CFUNCTYPE(
-        None,
-        ctypes.c_uint,
-        ctypes.c_uint,
-        ctypes.c_uint,
-        ctypes.c_void_p
-    )
     _callback = None
     _handle = 0
     path = ''
@@ -134,11 +52,11 @@ class Music:
         self.path = path
         if adj.platform.os == 'windows' or adj.platform.os == 'cygwin':
             path = path.encode('UTF-16')[2:]
-            utf16 = 0x80000000
+            flags = SampleFlags.FLOAT | UNICODE
         else:
             path = path.encode('UTF-8')
-            utf16 = 0
-        self._handle = bass.BASS_StreamCreateFile(False, path, 0, 0, utf16)
+            flags = SampleFlags.FLOAT
+        self._handle = bass.BASS_StreamCreateFile(False, path, 0, 0, flags)
         if self._handle == 0:
             error = bass.BASS_ErrorGetCode()
             raise BassErrors.openFile[error][0](BassErrors.openFile[error][1])
@@ -165,10 +83,10 @@ class Music:
         def callback(event, song, _, obj):
             self._callback = None
             function(self)
-        self._callback = Music._Callback(callback)
+        self._callback = SyncCallback(callback)
         self._callback.handle = bass.BASS_ChannelSetSync(
             self._handle,
-            0x40000002,
+            SyncFlags.END | SyncFlags.ONETIME,
             0,
             self._callback,
             None
@@ -201,4 +119,5 @@ class Music:
         self.playing = False
 
 
-bass = init()
+bass = loadLib()
+initCard(bass)
