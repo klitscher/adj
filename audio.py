@@ -30,7 +30,7 @@ def init(card: int=-1) -> ctypes.CDLL:
     The first argument is the index of the sound output device, but using -1
     will initialize the default device.
     """
-    if not bass.BASS_Init(card, 48000, 0, 0, None):
+    if not bass.BASS_Init(card, 48000, 0, None, None):
         error = bass.BASS_ErrorGetCode()
         raise Errors.init[error][0](Errors.init[error][1])
 
@@ -72,7 +72,7 @@ class Music:
         self._handle = bass.BASS_StreamCreateFile(False, path, 0, 0, flags)
         if self._handle == 0:
             error = bass.BASS_ErrorGetCode()
-            raise BassErrors.openFile[error][0](BassErrors.openFile[error][1])
+            raise Errors.openFile[error][0](Errors.openFile[error][1])
         self.playing = False
 
     def __repr__(self):
