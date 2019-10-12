@@ -24,7 +24,7 @@ def enumerateDevices() -> typing.List[SoundCardInfo]:
             return ret
 
 
-def initCard(card: int=-1) -> ctypes.CDLL:
+def init(card: int=-1) -> ctypes.CDLL:
     """Initialize the audio system.
 
     The first argument is the index of the sound output device, but using -1
@@ -133,4 +133,3 @@ class Music:
 
 
 bass = loadLib()
-initCard()
