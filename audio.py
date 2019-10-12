@@ -114,6 +114,7 @@ class Music:
     )
     _callback = None
     _handle = 0
+    path = ''
     playing = False
 
     def __del__(self):
@@ -130,6 +131,7 @@ class Music:
         contents to determine the file type, so inaccruate extensions are
         allowed.
         """
+        self.path = path
         if adj.platform.os == 'windows' or adj.platform.os == 'cygwin':
             path = path.encode('UTF-16')[2:]
             utf16 = 0x80000000
@@ -141,6 +143,14 @@ class Music:
             error = bass.BASS_ErrorGetCode()
             raise BassErrors.openFile[error][0](BassErrors.openFile[error][1])
         self.playing = False
+
+    def __repr__(self):
+        """Return what the constructor to create the object looked like."""
+        return '{}.{}({})'.format(
+            type(self).__module__,
+            type(self).__name__,
+            repr(self.path)
+        )
         
     def onEnd(self, function: collections.abc.Callable):
         """Register callback to be called when the song reaches the end.
