@@ -65,10 +65,10 @@ class Music:
         self.path = path
         if adj.platform.os == 'windows' or adj.platform.os == 'cygwin':
             path = path.encode('UTF-16')[2:]
-            flags = SampleFlags.FLOAT | UNICODE
+            flags = StreamFlags.AUTOFREE | SampleFlags.FLOAT | UNICODE
         else:
             path = path.encode('UTF-8')
-            flags = SampleFlags.FLOAT
+            flags = StreamFlags.AUTOFREE | SampleFlags.FLOAT
         self._handle = bass.BASS_StreamCreateFile(False, path, 0, 0, flags)
         if self._handle == 0:
             error = bass.BASS_ErrorGetCode()
@@ -95,6 +95,7 @@ class Music:
             bass.BASS_ChannelRemoveSync(self._handle, self._callback.handle)
         def callback(event, song, _, obj):
             self._callback = None
+            self.playing = False
             function(self)
         self._callback = SyncCallback(callback)
         self._callback.handle = bass.BASS_ChannelSetSync(
