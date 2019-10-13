@@ -46,7 +46,6 @@ class Music:
     _callback = None
     _handle = 0
     path = ''
-    playing = False
 
     def __del__(self):
         """Free the resources used by Bass for this song when destroying it."""
@@ -73,7 +72,6 @@ class Music:
         if self._handle == 0:
             error = bass.BASS_ErrorGetCode()
             raise Errors.openFile[error][0](Errors.openFile[error][1])
-        self.playing = False
 
     def __repr__(self):
         """Return what the constructor to create the object looked like."""
@@ -95,7 +93,6 @@ class Music:
             bass.BASS_ChannelRemoveSync(self._handle, self._callback.handle)
         def callback(event, song, _, obj):
             self._callback = None
-            self.playing = False
             function(self)
         self._callback = SyncCallback(callback)
         self._callback.handle = bass.BASS_ChannelSetSync(
@@ -111,7 +108,6 @@ class Music:
         if not self.playing:
             return
         bass.BASS_ChannelPause(self._handle)
-        self.playing = False
 
     def play(self):
         """Play/resume the song."""
@@ -120,7 +116,12 @@ class Music:
         if self.playing:
             return
         bass.BASS_ChannelPlay(self._handle, False)
-        self.playing = True
+
+    @property
+    def playing(self):
+        """Whether this song is currently playing."""
+        result = bass.BASS_ChannelIsActive(self._handle)
+        return result == ChannelActivities.PLAYING
 
     def stop(self):
         """Stop playing this song and free its resources.
@@ -130,7 +131,6 @@ class Music:
         bass.BASS_ChannelStop(self._handle)
         bass.BASS_StreamFree(self._handle)
         self._handle = 0
-        self.playing = False
 
 
 bass = loadLib()

@@ -9,6 +9,16 @@ UNICODE  = 0x80000000
 
 
 @enum.unique
+class ChannelActivities (enum.IntEnum):
+    """Flags describing whether a channel is playing."""
+    STOPPED       = 0
+    PLAYING       = 1
+    STALLED       = 2
+    PAUSED        = 3
+    PAUSED_DEVICE = 4
+
+
+@enum.unique
 class DeviceFlags (enum.IntEnum):
     """Flags describing the status of a sound card."""
     ENABLED  = 0X1
@@ -207,6 +217,8 @@ def loadLib() -> ctypes.CDLL:
         ctypes.c_uint32,
         ctypes.c_uint64
     )
+    bass.BASS_ChannelIsActive.restype = ctypes.c_uint32
+    bass.BASS_ChannelIsActive.argtypes = (ctypes.c_uint32,)
     bass.BASS_ChannelPause.restype = ctypes.c_bool
     bass.BASS_ChannelPause.argtypes = (ctypes.c_uint32,)
     bass.BASS_ChannelPlay.restype = ctypes.c_bool
