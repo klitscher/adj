@@ -93,7 +93,7 @@ class Music:
             bass.BASS_ChannelRemoveSync(self._handle, self._callback.handle)
         def callback(event, song, _, obj):
             self._callback = None
-            function(self)
+            function()
         self._callback = SyncCallback(callback)
         self._callback.handle = bass.BASS_ChannelSetSync(
             self._handle,
