@@ -45,13 +45,13 @@ class Music:
     """
     _callback = None
     _handle = 0
+    _played = False
     path = ''
 
     def __del__(self):
         """Free the resources used by Bass for this song when destroying it."""
-        if self._handle != 0:
+        if not self.stopped:
             bass.BASS_StreamFree(self._handle)
-            self._handle = 0
 
     def __init__(self, path: str):
         """Open a music file and prepare it for playing.
@@ -111,11 +111,12 @@ class Music:
 
     def play(self):
         """Play/resume the song."""
-        if self._handle == 0:
+        if self._played and self.stopped:
             raise TypeError('this song has been stopped')
         if self.playing:
             return
         bass.BASS_ChannelPlay(self._handle, False)
+        self._played = True
 
     @property
     def playing(self):
@@ -128,9 +129,22 @@ class Music:
 
         Once stopped, the song cannot be started/resumed.
         """
+        if self.stopped:
+            return
         bass.BASS_ChannelStop(self._handle)
         bass.BASS_StreamFree(self._handle)
-        self._handle = 0
+        self._played = True
+
+    @property
+    def stopped(self):
+        """Whether this song has stopped permanently.
+
+        This is distinct from a song that is merely paused. Also, a song that
+        has not started playing is not considered "stopped" unless the stop
+        method was explicitly called.
+        """
+        result = bass.BASS_ChannelIsActive(self._handle)
+        return self._played and result == ChannelActivities.STOPPED
 
 
 bass = loadLib()
