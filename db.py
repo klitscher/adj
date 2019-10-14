@@ -2,7 +2,6 @@
 
 import adj
 import os
-import parseMasterList
 import sqlite3
 
 class DataBase:
@@ -28,8 +27,11 @@ class DataBase:
 
     def close(self):
         """Method to close the db connection"""
-        self._conn.commit()
         self._conn.close()
+
+    def commit(self):
+        """Method to commit changes to the db"""
+        self._conn.commit()
 
     def createTables(self):
         """Method to create tables in database"""
@@ -57,6 +59,7 @@ class DataBase:
         self._conn.execute(music_sql)
         self._conn.execute(mood_sql)
         self._conn.execute(association_sql)
+        self.commit()
 
     def insertMusicRow(self, title, album, trackNumber,
                     pathToMusic,
@@ -79,6 +82,6 @@ class DataBase:
         mood: mood to be added to db
         """
     
-        mood_sql = """INSERT INTO moods(?)"""
+        mood_sql = """INSERT INTO moods VALUES(?)"""
 
-        self._conn.execute(mood_sql, (mood))
+        self._conn.execute(mood_sql, (mood,))
