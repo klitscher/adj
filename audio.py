@@ -97,6 +97,8 @@ class Music:
         metadata['track'] = metadata['track'].partition('/')[0]
         if metadata['track'].isnumeric():
             metadata['track'] = int(metadata['track'])
+        else:
+            metadata['track'] = -1
         self.metadata = metadata
 
     def __repr__(self):
