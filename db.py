@@ -35,7 +35,7 @@ class DataBase:
         """Method to create tables in database"""
 
         music_sql = """CREATE TABLE IF NOT EXISTS music (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY,
             title TEXT NOT NULL,
             album TEXT NOT NULL,
             number INTEGER NOT NULL,
@@ -58,9 +58,7 @@ class DataBase:
         self._conn.execute(mood_sql)
         self._conn.execute(association_sql)
 
-    def insertMusicRow(self, title, album, trackNumber,
-                    pathToMusic,
-                    pathToDb=os.path.join(adj.path, 'AmbientDJ_DB.sqlite3')):
+    def insertMusicRow(self, title, album, trackNumber, pathToMusic):
         """Method to insert a row into the music table
         title: title of the song
         album: album song is on
@@ -72,7 +70,11 @@ class DataBase:
         row_sql = """INSERT INTO music(title, album, number, path)
             VALUES(?, ?, ?, ?)
             """
-        self._conn.execute(row_sql, (title, album, trackNumber, pathToMusic))
+        cursor = self._conn.execute(
+            row_sql,
+            (title, album, trackNumber, pathToMusic)
+        )
+        return cursor.lastrowid
     
     def insertMoodRow(self, mood):
         """Method to insert a mood into db
@@ -81,4 +83,5 @@ class DataBase:
     
         mood_sql = """INSERT INTO moods(?)"""
 
-        self._conn.execute(mood_sql, (mood))
+        cursor = self._conn.execute(mood_sql, (mood,))
+        return cursor.lastrowid
