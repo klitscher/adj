@@ -65,7 +65,7 @@ class Music:
         """
         self.path = path
         if adj.platform.os == 'windows' or adj.platform.os == 'cygwin':
-            path = path.encode('UTF-16')[2:]
+            path = path.encode('UTF-16')[2:] + b'\x00'
             flags = StreamFlags.AUTOFREE | SampleFlags.FLOAT | UNICODE
         else:
             path = path.encode('UTF-8')

@@ -19,7 +19,7 @@ class AudioTests (unittest.TestCase):
         adj.audio.init(card)
 
     @unittest.skipIf(
-        os.getenv('ADJ_DEVICE', 0) == 0,
+        int(os.getenv('ADJ_DEVICE', 0)) == 0,
         'audio device not selected, skipping manual test'
     )
     def testAudible(self):
