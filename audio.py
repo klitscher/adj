@@ -43,14 +43,16 @@ class Music:
     file and some additional resources in Bass, you should call the stop
     method explicitly when done playing to avoid leaking.
     """
-    _callback = None
     _handle = 0
+    _onEnd = None
     _played = False
+    _stopped = False
+    onEnd = None
     path = ''
 
     def __del__(self):
         """Free the resources used by Bass for this song when destroying it."""
-        if not self.stopped:
+        if not self._stopped:
             bass.BASS_StreamFree(self._handle)
 
     def __init__(self, path: str):
@@ -72,6 +74,18 @@ class Music:
         if self._handle == 0:
             error = bass.BASS_ErrorGetCode()
             raise Errors.openFile[error][0](Errors.openFile[error][1])
+        def callback(event, channel, arg, data):
+            self._stopped = True
+            if self.onEnd is not None:
+                self.onEnd()
+        self._onEnd = SyncCallback(callback)
+        bass.BASS_ChannelSetSync(
+            self._handle,
+            SyncFlags.END | SyncFlags.ONETIME,
+            0,
+            self._onEnd,
+            None
+        )
 
     def __repr__(self):
         """Return what the constructor to create the object looked like."""
@@ -80,28 +94,17 @@ class Music:
             type(self).__name__,
             repr(self.path)
         )
-        
-    def onEnd(self, function: collections.abc.Callable):
-        """Register callback to be called when the song reaches the end.
-        
-        Only one callback can be set per Music object. If you call this twice,
-        the first callback will be unset and replaced with the new one. It's
-        recommended to call this method only before the song starts playing
-        to guarantee no race condition. The callback is also removed by Bass
-        once it runs."""
-        if self._callback is not None:
-            bass.BASS_ChannelRemoveSync(self._handle, self._callback.handle)
-        def callback(event, song, _, obj):
-            self._callback = None
-            function()
-        self._callback = SyncCallback(callback)
-        self._callback.handle = bass.BASS_ChannelSetSync(
-            self._handle,
-            SyncFlags.END | SyncFlags.ONETIME,
-            0,
-            self._callback,
-            None
-        )
+
+    def _getState(self) -> ChannelActivities:
+        if self._stopped:
+            return ChannelActivities.STOPPED
+        state = bass.BASS_ChannelIsActive(self._handle)
+        if state == ChannelActivities.STOPPED:
+            if self._played:
+                self._stopped = True
+                return ChannelActivities.STOPPED
+            return ChannelActivities.PAUSED
+        return ChannelActivities(state)
 
     def pause(self):
         """Pause the song, allowing it to continue where it was paused."""
@@ -111,7 +114,7 @@ class Music:
 
     def play(self):
         """Play/resume the song."""
-        if self._played and self.stopped:
+        if self.stopped:
             raise TypeError('this song has been stopped')
         if self.playing:
             return
@@ -119,10 +122,9 @@ class Music:
         self._played = True
 
     @property
-    def playing(self):
+    def playing(self) -> bool:
         """Whether this song is currently playing."""
-        result = bass.BASS_ChannelIsActive(self._handle)
-        return result == ChannelActivities.PLAYING
+        return self._getState() == ChannelActivities.PLAYING
 
     def stop(self):
         """Stop playing this song and free its resources.
@@ -132,19 +134,17 @@ class Music:
         if self.stopped:
             return
         bass.BASS_ChannelStop(self._handle)
-        bass.BASS_StreamFree(self._handle)
-        self._played = True
+        self._stopped = True
 
     @property
-    def stopped(self):
+    def stopped(self) -> bool:
         """Whether this song has stopped permanently.
 
         This is distinct from a song that is merely paused. Also, a song that
         has not started playing is not considered "stopped" unless the stop
         method was explicitly called.
         """
-        result = bass.BASS_ChannelIsActive(self._handle)
-        return self._played and result == ChannelActivities.STOPPED
+        return self._getState() == ChannelActivities.STOPPED
 
 
 bass = loadLib()
