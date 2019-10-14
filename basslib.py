@@ -240,7 +240,10 @@ def loadLib() -> ctypes.CDLL:
         bass = ctypes.CDLL(os.path.join(adj.path, 'libbass.dylib'))
         tags = ctypes.CDLL(os.path.join(adj.path, 'libtags.dylib'))
     elif adj.platform.os == 'windows':
-        bass = ctypes.WinDLL(os.path.join(adj.path, 'bass.dll'))
+        bass = ctypes.WinDLL(
+            os.path.join(adj.path, 'bass.dll'),
+            ctypes.RTLD_GLOBAL
+        )
         tags = ctypes.WinDLL(os.path.join(adj.path, 'tags.dll'))
     else:
         bass = ctypes.CDLL(os.path.join(adj.path, 'libbass.so'))
