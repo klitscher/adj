@@ -13,7 +13,10 @@ def load_music(music_root, db_obj):
     for dirpath, dirnames, filenames in os.walk(music_root):
         for filename in filenames:
             path = dirpath + filename
-            song = adj.audio.Music(path)
+            try:
+                song = adj.audio.Music(path)
+            except ValueError:
+                continue
             album = normalizeAlbum(song.metadata['album'])
             if album in albums and song.metadata['track'] in albums[album]:
                 row = db_obj.insertMusicRow(
