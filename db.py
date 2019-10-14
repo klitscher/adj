@@ -2,6 +2,7 @@
 
 import adj
 import os
+import parseMasterList
 import sqlite3
 
 class DataBase:
@@ -72,3 +73,12 @@ class DataBase:
             VALUES(?, ?, ?, ?)
             """
         self._conn.execute(row_sql, (title, album, trackNumber, pathToMusic))
+    
+    def insertMoodRow(self, mood):
+        """Method to insert a mood into db
+        mood: mood to be added to db
+        """
+    
+        mood_sql = """INSERT INTO moods(?)"""
+
+        self._conn.execute(mood_sql, (mood))
