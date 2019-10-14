@@ -196,7 +196,10 @@ class SyncFlags (enum.IntEnum):
     ONETIME    = 0x80000000
 
 
-SyncCallback = ctypes.CFUNCTYPE(
+SyncCallback = (
+    ctypes.WINFUNCTYPE if adj.platform == 'windows'
+    else ctypes.CFUNCTYPE
+)(
     None,
     ctypes.c_uint32,
     ctypes.c_uint32,
@@ -232,12 +235,16 @@ def loadLib() -> ctypes.CDLL:
     """Load the Bass library and fill in its types with Python."""
     if adj.platform.os == 'cygwin':
         bass = ctypes.CDLL(os.path.join(adj.path, 'bass.dll'))
+        tags = ctypes.CDLL(os.path.join(adj.path, 'tags.dll'))
     elif adj.platform.os == 'mac':
-        bass = ctypes.CDLL(os.path.join(adj.path, 'libbass.dynlib'))
+        bass = ctypes.CDLL(os.path.join(adj.path, 'libbass.dylib'))
+        tags = ctypes.CDLL(os.path.join(adj.path, 'libtags.dylib'))
     elif adj.platform.os == 'windows':
         bass = ctypes.WinDLL(os.path.join(adj.path, 'bass.dll'))
+        tags = ctypes.WinDLL(os.path.join(adj.path, 'tags.dll'))
     else:
         bass = ctypes.CDLL(os.path.join(adj.path, 'libbass.so'))
+        tags = ctypes.CDLL(os.path.join(adj.path, 'libtags.so'))
     bass.BASS_ChannelBytes2Seconds.restype = ctypes.c_double
     bass.BASS_ChannelBytes2Seconds.argtypes = (
         ctypes.c_uint32,
@@ -284,6 +291,8 @@ def loadLib() -> ctypes.CDLL:
         ctypes.c_uint32,
         ctypes.POINTER(SoundCardInfo)
     )
+    bass.BASS_GetVersion.restype = ctypes.c_uint32
+    bass.BASS_GetVersion.argyptes = ()
     bass.BASS_Init.restype = ctypes.c_bool
     bass.BASS_Init.argtypes = (
         ctypes.c_int,
@@ -302,4 +311,11 @@ def loadLib() -> ctypes.CDLL:
     )
     bass.BASS_StreamFree.restype = ctypes.c_bool
     bass.BASS_StreamFree.argtypes = (ctypes.c_uint32,)
-    return bass
+    tags.TAGS_GetVersion.restype = ctypes.c_uint32
+    tags.TAGS_GetVersion.argtypes = ()
+    tags.TAGS_Read.restype = ctypes.c_char_p
+    tags.TAGS_Read.argtypes = (ctypes.c_uint32, ctypes.c_char_p)
+    tags.TAGS_SetUTF8.restype = ctypes.c_bool
+    tags.TAGS_SetUTF8.argtypes = (ctypes.c_bool,)
+    tags.TAGS_SetUTF8(True)
+    return bass, tags

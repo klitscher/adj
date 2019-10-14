@@ -86,6 +86,18 @@ class Music:
             self._onEnd,
             None
         )
+        metadata = tags.TAGS_Read(
+            self._handle,
+            b'album\x1F%ALBM\x1E' \
+            b'artist\x1F%ARTI\x1E' \
+            b'title\x1F%TITL\x1E' \
+            b'track\x1F%TRCK'
+        ).decode('UTF-8').split('\x1E')
+        metadata = dict(item.partition('\x1F')[::2] for item in metadata)
+        metadata['track'] = metadata['track'].partition('/')[0]
+        if metadata['track'].isnumeric():
+            metadata['track'] = int(metadata['track'])
+        self.metadata = metadata
 
     def __repr__(self):
         """Return what the constructor to create the object looked like."""
@@ -169,4 +181,4 @@ class Music:
         return self._getState() == ChannelActivities.STOPPED
 
 
-bass = loadLib()
+bass, tags = loadLib()
