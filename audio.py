@@ -106,6 +106,28 @@ class Music:
             return ChannelActivities.PAUSED
         return ChannelActivities(state)
 
+    def fade(self, time: float=1.0):
+        """Fade out the song over some amount of seconds, stopping it.
+
+        When the song finishes fading out, it is freed and considered stopped.
+        This does not trigger the "onEnd" callback. If the song is paused, it
+        is just stopped instead.
+        """
+        state = self._getState()
+        if state == ChannelActivities.STOPPED:
+            raise TypeError('this song has been stopped')
+        if state == ChannelActivities.PLAYING:
+            time = int(time * 1000)
+            bass.BASS_ChannelSlideAttribute(
+                self._handle,
+                Attributes.VOL,
+                -1,
+                time
+            )
+        else:
+            bass.BASS_ChannelStop(self._handle)
+        self._stopped = True
+
     def pause(self):
         """Pause the song, allowing it to continue where it was paused."""
         if not self.playing:
