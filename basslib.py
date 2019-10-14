@@ -240,13 +240,13 @@ def loadLib() -> ctypes.CDLL:
         bass = ctypes.CDLL(os.path.join(adj.path, 'libbass.dylib'))
         tags = ctypes.CDLL(os.path.join(adj.path, 'libtags.dylib'))
     elif adj.platform.os == 'windows':
-        bass = ctypes.WinDLL(
-            os.path.join(adj.path, 'bass.dll'),
-            ctypes.RTLD_GLOBAL
-        )
+        bass = ctypes.WinDLL(os.path.join(adj.path, 'bass.dll'))
         tags = ctypes.WinDLL(os.path.join(adj.path, 'tags.dll'))
     else:
-        bass = ctypes.CDLL(os.path.join(adj.path, 'libbass.so'))
+        bass = ctypes.CDLL(
+            os.path.join(adj.path, 'libbass.so'),
+            ctypes.RTLD_GLOBAL
+        )
         tags = ctypes.CDLL(os.path.join(adj.path, 'libtags.so'))
     bass.BASS_ChannelBytes2Seconds.restype = ctypes.c_double
     bass.BASS_ChannelBytes2Seconds.argtypes = (
