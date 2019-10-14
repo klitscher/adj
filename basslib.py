@@ -270,6 +270,12 @@ def loadLib() -> ctypes.CDLL:
         ctypes.c_uint32,
         ctypes.c_double
     )
+    bass.BASS_ChannelSetAttribute.restype = ctypes.c_bool
+    bass.BASS_ChannelSetAttribute.argtypes = (
+        ctypes.c_uint32,
+        ctypes.c_uint32,
+        ctypes.c_float
+    )
     bass.BASS_ChannelSetSync.restype = ctypes.c_uint32
     bass.BASS_ChannelSetSync.argtypes = (
         ctypes.c_uint32,

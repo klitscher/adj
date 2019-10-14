@@ -118,7 +118,24 @@ class Music:
             return ChannelActivities.PAUSED
         return ChannelActivities(state)
 
-    def fade(self, time: float=1.0):
+    def fadeIn(self, time: float=2.0):
+        """Fade in a song over some amount of seconds.
+
+        If the song is already playing, it will still fade in from where it is.
+        """
+        if self.stopped:
+            raise TypeError('this song has been stopped')
+        time = int(time * 1000)
+        bass.BASS_ChannelSetAttribute(self._handle, Attributes.VOL, 0)
+        bass.BASS_ChannelPlay(self._handle, False)
+        bass.BASS_ChannelSlideAttribute(
+            self._handle,
+            Attributes.VOL,
+            1,
+            time
+        )
+
+    def fadeOut(self, time: float=2.0):
         """Fade out the song over some amount of seconds, stopping it.
 
         When the song finishes fading out, it is freed and considered stopped.
