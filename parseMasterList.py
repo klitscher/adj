@@ -41,13 +41,13 @@ def parseMasterList(filePath):
         albumName = None
         for line in f:
             if albumName is None:
-                albumName = line.rstrip('\n')
+                albumName = normalizeAlbum(line.rstrip('\n'))
                 albums[albumName] = {}
                 tracks = albums[albumName]
             elif line == '%\n':
                 albumName = None
             else:
-                track = line.partition(' ')[0]
+                track = int(line.partition(' ')[0])
                 moods = set(line.partition(' ')[2].rstrip('\n').split(', '))
                 tracks[track] = moods
     return albums
