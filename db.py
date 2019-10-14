@@ -5,7 +5,7 @@ import os
 import sqlite3
 
 
-def createDb(path=os.path.join(adj.path, 'AmbientDJ_DB.db')):
+def createDb(path=os.path.join(adj.path, 'AmbientDJ_DB.sqlite3')):
     """Function to create a databases with required tables
     path: Optional argument to already created database
     """
@@ -19,21 +19,20 @@ def createDb(path=os.path.join(adj.path, 'AmbientDJ_DB.db')):
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         album TEXT NOT NULL,
-        trackNumber TEXT NOT NULL,
-        pathToFile TEXT NOT NULL
+        number INTEGER NOT NULL,
+        path TEXT NOT NULL
         )
         """
     mood_sql = """CREATE TABLE IF NOT EXISTS moods (
         mood TEXT PRIMARY KEY
         )
         """
-    association_sql = """CREATE TABLE IF NOT EXISTS moodIndex (
+    association_sql = """CREATE TABLE IF NOT EXISTS music_moods (
         mood TEXT,
-        music_id INTEGER,
-        PRIMARY KEY (mood, music_id)
+        track INTEGER,
+        PRIMARY KEY (mood, track)
         FOREIGN KEY(mood) REFERENCES moods ON DELETE CASCADE,
-        FOREIGN KEY(music_id) REFERENCES
-            music(id) ON DELETE CASCADE
+        FOREIGN KEY(track) REFERENCES music ON DELETE CASCADE
         )
         """
     connection.execute(music_sql)
@@ -45,7 +44,7 @@ def createDb(path=os.path.join(adj.path, 'AmbientDJ_DB.db')):
 
 def insertMusicRow(title, album, trackNumber,
                    pathToMusic,
-                   pathToDb=os.path.join(adj.path, 'AmbientDJ_DB.db')):
+                   pathToDb=os.path.join(adj.path, 'AmbientDJ_DB.sqlite3')):
     """Method to insert a row into the music table
     title: title of the song
     album: album song is on
@@ -55,10 +54,9 @@ def insertMusicRow(title, album, trackNumber,
     """
     connection = sqlite3.connect(pathToDb)
 
-    row_sql = """INSERT INTO moods (title, album, trackNumber, pathToFile)
-        VALUES(title, album, trackNumber, pathToMusic)
+    row_sql = """INSERT INTO music(title, album, number, path)
+        VALUES(?, ?, ?, ?)
         """
-    connection.execute(row_sql)
+    connection.execute(row_sql, (title, album, trackNumber, pathToMusic))
     connection.commit()
     connection.close()
-    
