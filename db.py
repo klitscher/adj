@@ -42,3 +42,23 @@ def createDb(path=os.path.join(adj.path, 'AmbientDJ_DB.db')):
 
     connection.commit()
     connection.close()
+
+def insertMusicRow(title, album, trackNumber,
+                   pathToMusic,
+                   pathToDb=os.path.join(adj.path, 'AmbientDJ_DB.db')):
+    """Method to insert a row into the music table
+    title: title of the song
+    album: album song is on
+    trackNumber: track number of the song
+    pathToMusic: path to the song in the user's music library
+    pathToDb: path to the sqlite database
+    """
+    connection = sqlite3.connect(pathToDb)
+
+    row_sql = """INSERT INTO moods (title, album, trackNumber, pathToFile)
+        VALUES(title, album, trackNumber, pathToMusic)
+        """
+    connection.execute(row_sql)
+    connection.commit()
+    connection.close()
+    
