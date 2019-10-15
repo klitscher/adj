@@ -1,8 +1,13 @@
 """Module to create a database"""
 
 import adj
+import collections
 import os
 import sqlite3
+import typing
+
+
+Music = collections.namedtuple('Music', ('title', 'album', 'number', 'path'))
 
 class DataBase:
     """Class to instantiate db
@@ -10,34 +15,23 @@ class DataBase:
     but needs to be manually closed when all
     transaction are done by calling .close()
     """
-    def __init__(self, path=os.path.join(adj.path, 'AmbientDJ_DB.sqlite3')):
+
+    def __init__(self, path=os.path.join(adj.path, 'adj.db')):
         """Instantiates class
         path: path to the database
         """
         self._path = path
-        self._conn = self.connect()
+        self._conn = sqlite3.connect(path)
+        self._conn.execute('PRAGMA foreign_keys = ON')
     
-    def connect(self):
-        """Method to connect to database"""
-        connection = sqlite3.connect(self._path)
-
-        """ Forcing foreign key constraints """
-        connection.execute('PRAGMA foreign_keys = ON')
-        return connection
-
     def close(self):
         """Method to close the db connection"""
         self._conn.close()
 
-    def commit(self):
-        """Method to commit changes to the db"""
-        self._conn.commit()
-
     def createTables(self):
         """Method to create tables in database"""
-
         music_sql = """CREATE TABLE IF NOT EXISTS music (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY,
             title TEXT NOT NULL,
             album TEXT NOT NULL,
             number INTEGER NOT NULL,
@@ -59,11 +53,39 @@ class DataBase:
         self._conn.execute(music_sql)
         self._conn.execute(mood_sql)
         self._conn.execute(association_sql)
-        self.commit()
 
-    def insertMusicRow(self, title, album, trackNumber,
-                    pathToMusic,
-                    pathToDb=os.path.join(adj.path, 'AmbientDJ_DB.sqlite3')):
+    def getMoods(self) -> typing.List[str]:
+        """Get the list of all moods."""
+        cursor = self._conn.execute('SELECT mood FROM moods')
+        return set(row[0] for row in cursor.fetchall())
+
+    def getMusic(self, title=None, album=None, path=None) -> typing.List[Music]:
+        """Get all songs or the song(s) matching given keyword arguments."""
+        filters = (('title', title), ('album', album), ('path', path))
+        if title is not None or album is not None or path is not None:
+            where = ' WHERE ' + ' and '.join(
+                name + ' = ?'
+                for name, value in filters
+                if value is not None
+            )
+        else:
+            where = ''
+        cursor = self._conn.execute(
+            'SELECT title, album, number, path FROM music' + where,
+            tuple(value for name, value in filters if value is not None)
+        )
+        return [Music(*row) for row in cursor.fetchall()]
+
+    def insertAssociation(self, mood, track):
+        """Method to insert a row into the association table.
+        mood: name of mood
+        track: row ID of track from music table
+        """
+        row_sql = 'INSERT INTO music_moods(mood, track) VALUES (?, ?)'
+        cursor = self._conn.execute(row_sql, (mood, track))
+        return cursor.lastrowid
+
+    def insertMusic(self, title, album, trackNumber, pathToMusic):
         """Method to insert a row into the music table
         title: title of the song
         album: album song is on
@@ -71,13 +93,12 @@ class DataBase:
         pathToMusic: path to the song in the user's music library
         pathToDb: path to the sqlite database
         """
-
         row_sql = """INSERT INTO music(title, album, number, path)
             VALUES(?, ?, ?, ?)
             """
         self._conn.execute(row_sql, (title, album, trackNumber, pathToMusic))
     
-    def insertMoodRow(self, mood):
+    def insertMood(self, mood):
         """Method to insert a mood into db
         mood: mood to be added to db
         """
