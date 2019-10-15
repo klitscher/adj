@@ -1,15 +1,16 @@
 import adj
 import adj.audio
 import adj.db
-import adj.parseMasterList as parse
+import adj.masterlist
 import os
 import re
 
 
-def load_music(music_root, db_obj):
+def populateMusic(music_root, db_obj):
     """parse user music and store matching items in db"""
 
-    albums = parse.parseMasterList(os.path.join(adj.path, 'allmoods.txt'))
+    path = os.path.join(adj.path, 'allmoods.txt')
+    albums = adj.masterlist.parseMasterList(path)
 
     for dirpath, dirnames, filenames in os.walk(music_root):
         for filename in filenames:
