@@ -9,6 +9,7 @@ import typing
 
 Music = collections.namedtuple('Music', ('title', 'album', 'number', 'path'))
 
+
 class DataBase:
     """Class to instantiate db
     This will automatically connect to the db,
@@ -24,8 +25,10 @@ class DataBase:
         self._conn = sqlite3.connect(path)
         self._conn.execute('PRAGMA foreign_keys = ON')
     
-    def close(self):
+    def close(self, commit=True):
         """Method to close the db connection"""
+        if commit:
+            self._conn.commit()
         self._conn.close()
 
     def createTables(self):
@@ -102,7 +105,6 @@ class DataBase:
         """Method to insert a mood into db
         mood: mood to be added to db
         """
-    
         mood_sql = """INSERT INTO moods VALUES(?)"""
 
         self._conn.execute(mood_sql, (mood,))
