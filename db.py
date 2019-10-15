@@ -4,6 +4,7 @@ import adj
 import os
 import sqlite3
 
+
 class DataBase:
     """Class to instantiate db
     This will automatically connect to the db,
@@ -60,6 +61,11 @@ class DataBase:
         self._conn.execute(mood_sql)
         self._conn.execute(association_sql)
         self.commit()
+
+    def insertAssociationRow(self, mood, track):
+        row_sql = 'INSERT INTO music_moods(mood, track) VALUES (?, ?)'
+        cursor = self._conn.execute(row_sql, (mood, track))
+        return cursor.lastrowid
 
     def insertMusicRow(self, title, album, trackNumber, pathToMusic):
         """Method to insert a row into the music table
