@@ -28,4 +28,5 @@ def load_music(music_root, db_obj):
                 )
                 for mood in albums[album][song.metadata['track']]:
                     db_obj.insertAssociationRow(mood, row)
+            song.stop()
     db_obj.commit()
