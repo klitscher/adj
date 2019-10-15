@@ -18,15 +18,14 @@ def load_music(music_root, db_obj):
                 song = adj.audio.Music(path)
             except ValueError:
                 continue
-            album = parse.normalizeAlbum(song.metadata['album'])
+            album = adj.masterlist.normalizeAlbum(song.metadata['album'])
             if album in albums and song.metadata['track'] in albums[album]:
-                row = db_obj.insertMusicRow(
+                row = db_obj.insertMusic(
                     re.sub('\\s+', ' ', song.metadata['title']).strip(' '),
                     re.sub('\\s+', ' ', song.metadata['album']).strip(' '),
                     song.metadata['track'],
                     path
                 )
                 for mood in albums[album][song.metadata['track']]:
-                    db_obj.insertAssociationRow(mood, row)
+                    db_obj.insertAssociation(mood, row)
             song.stop()
-    db_obj.commit()
