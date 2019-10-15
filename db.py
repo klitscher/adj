@@ -13,6 +13,7 @@ Music = collections.namedtuple(
 )
 
 
+
 class DataBase:
     """Class to instantiate db
     This will automatically connect to the db,
@@ -128,12 +129,17 @@ class DataBase:
         row_sql = """INSERT INTO music(title, album, number, path)
             VALUES(?, ?, ?, ?)
             """
-        self._conn.execute(row_sql, (title, album, trackNumber, pathToMusic))
-
+        cursor = self._conn.execute(
+            row_sql,
+            (title, album, trackNumber, pathToMusic)
+        )
+        return cursor.lastrowid
+    
     def insertMood(self, mood):
         """Method to insert a mood into db
         mood: mood to be added to db
         """
         mood_sql = """INSERT INTO moods VALUES(?)"""
 
-        self._conn.execute(mood_sql, (mood,))
+        cursor = self._conn.execute(mood_sql, (mood,))
+        return cursor.lastrowid

@@ -30,24 +30,28 @@ def normalizeAlbum(name: str):
     return name
 
 
-def parseMasterList(filePath):
+def parseMasterList(filePath, db_obj):
     """Method to parse the album text file
 
     filePath: Path to the text file
 
     """
     albums = {}
+    allMoods = set()
     with open(filePath) as f:
         albumName = None
         for line in f:
             if albumName is None:
-                albumName = line.rstrip('\n')
+                albumName = normalizeAlbum(line.rstrip('\n'))
                 albums[albumName] = {}
                 tracks = albums[albumName]
             elif line == '%\n':
                 albumName = None
             else:
-                track = line.partition(' ')[0]
+                track = int(line.partition(' ')[0])
                 moods = set(line.partition(' ')[2].rstrip('\n').split(', '))
+                allMoods.update(moods)
                 tracks[track] = moods
+    for mood in allMoods:
+        db_obj.insertMoodRow(mood)
     return albums

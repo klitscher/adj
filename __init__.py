@@ -1,7 +1,7 @@
 """Atmospheric DJ: play songs fitting your mood
+
 Longer description
 """
-
 
 import collections as _collections
 import sys as _sys
