@@ -7,7 +7,10 @@ import sqlite3
 import typing
 
 
-Music = collections.namedtuple('Music', ('title', 'album', 'number', 'path'))
+Music = collections.namedtuple(
+    'Music',
+    ('title', 'album', 'number', 'path', 'moods')
+)
 
 
 
@@ -25,7 +28,7 @@ class DataBase:
         self._path = path
         self._conn = sqlite3.connect(path)
         self._conn.execute('PRAGMA foreign_keys = ON')
-    
+
     def close(self, commit=True):
         """Method to close the db connection"""
         if commit:
@@ -58,7 +61,33 @@ class DataBase:
         self._conn.execute(mood_sql)
         self._conn.execute(association_sql)
 
-    def getMoods(self) -> typing.List[str]:
+    def filterMusic(self, filter: typing.Dict[str, bool]) -> typing.List[Music]:
+        """Get music from the database matching the given mood filter.
+
+        The filter dictionary's keys are the mood names. If the value is
+        False, then only songs without that mood are returned; and if the value
+        is True, only songs with that mood are returned.
+        """
+        query = '''
+            SELECT title, album, number, path, group_concat(mood, "\x1F")
+            FROM music JOIN music_moods ON track = id GROUP BY id
+        '''
+        if len(filter) > 0:
+            template = 'sum(CASE WHEN mood = ? THEN 1 ELSE 0 END) {} 0'
+            having = ' HAVING ' + ' and '.join(
+                template.format('>' if include else '=')
+                for include in filter.values()
+            )
+        cursor = self._conn.execute(
+            query + having,
+            tuple(mood for mood in filter.keys())
+        )
+        return [
+            Music(title, album, number, path, set(moods.split('\x1F')))
+            for title, album, number, path, moods in cursor.fetchall()
+        ]
+
+    def getMoods(self) -> typing.Set[str]:
         """Get the list of all moods."""
         cursor = self._conn.execute('SELECT mood FROM moods')
         return set(row[0] for row in cursor.fetchall())
@@ -78,7 +107,7 @@ class DataBase:
             'SELECT title, album, number, path FROM music' + where,
             tuple(value for name, value in filters if value is not None)
         )
-        return [Music(*row) for row in cursor.fetchall()]
+        return [Music(*row + (set(),)) for row in cursor.fetchall()]
 
     def insertAssociation(self, mood, track):
         """Method to insert a row into the association table.
