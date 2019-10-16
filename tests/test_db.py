@@ -70,6 +70,57 @@ class TestDbMethods(unittest.TestCase):
         self.data.insertMood('happy')
         self.data.insertMusic('its', 'a fun', 1, '/song')
         self.data.insertAssociation('happy', 1)
-        music = self.data.getMusic(title='its')
-        music2 = [Music(title='its', album='a fun', number=1, path='/song', moods=set())]
-        self.assertEqual(music, music2)
+        music1 = self.data.getMusic(title='its')
+        music2 = self.data.getMusic(album='a fun')
+        music3 = self.data.getMusic(path='/song')
+        music4 = self.data.getMusic(album='a fun', title='its')
+        musicControl1 = [Music(title='its', album='a fun', number=1, path='/song', moods=set())]
+        self.assertEqual(musicControl1, music1)
+        self.assertEqual(musicControl1, music2)
+        self.assertEqual(musicControl1, music3)
+        self.assertEqual(musicControl1, music4)
+
+        self.data.insertMusic('more', 'a fun', 2, '/song1')
+        musicControl2 = [Music(title='more', album='a fun', number=2, path='/song1', moods=set())]
+        music5 = self.data.getMusic(title='more')
+        self.assertEqual(musicControl2, music5)
+        
+        musicControl3 = [Music(title='its', album='a fun', number=1, path='/song', moods=set()), 
+                         Music(title='more', album='a fun', number=2, path='/song1', moods=set())]
+        music6 = self.data.getMusic(album='a fun')
+        self.assertEqual(musicControl3, music6)
+
+    def testGetMoods(self):
+        """Tests retrieving moods from the db"""
+        self.data.createTables()
+        self.data.insertMood('happy')
+        self.data.insertMood('sad')
+        self.data.insertMood('silly')
+        moods = self.data.getMoods()
+        moods1 = {'happy', 'sad', 'silly'}
+        self.assertEqual(moods, moods1)
+        
+    def testFilterMusic(self):
+        """Tests filterMusic function"""
+        from db import Music
+        self.data.createTables()
+        self.data.insertMood('happy')
+        self.data.insertMood('sad')
+        self.data.insertMood('silly')
+        self.data.insertMusic('its', 'a fun', 1, '/song')
+        self.data.insertMusic('more', 'a fun', 2, '/song1')
+        self.data.insertMusic('test', 'a fun', 3, '/song2')
+        self.data.insertAssociation('happy', 1)
+        self.data.insertAssociation('sad', 2)
+        self.data.insertAssociation('silly', 1)
+        self.data.insertAssociation('silly', 3)
+        music1 = self.data.filterMusic({'happy': True})
+        music2 = self.data.filterMusic({'silly': True})
+        music3 = self.data.filterMusic({'silly': False, 'happy': False})
+        control1 = [Music(title='its', album='a fun', number=1, path='/song', moods={'silly', 'happy'})] 
+        control2 = [Music(title='its', album='a fun', number=1, path='/song', moods={'silly', 'happy'}),
+                    Music(title='test', album='a fun', number=3, path='/song2', moods={'silly'})]
+        control3 = [Music(title='more', album='a fun', number=2, path='/song1', moods={'sad'})]
+        self.assertEqual(control1, music1)
+        self.assertEqual(control2, music2)
+        self.assertEqual(control3, music3)
