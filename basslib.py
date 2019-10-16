@@ -11,27 +11,28 @@ UNICODE  = 0x80000000
 @enum.unique
 class Attributes (enum.IntEnum):
     """Attributes of channels that can be modified or slid."""
-    FREQ             = 0x001
-    VOL              = 0x002
-    PAN              = 0x003
-    EAXMIX           = 0x004
-    NOBUFFER         = 0x005
-    VBR              = 0x006
-    CPU              = 0x007
-    SRC              = 0x008
-    NET_RESUME       = 0x009
-    SCANINFO         = 0x00A
-    NORAMP           = 0x00B
-    BITRATE          = 0x00C
-    MUSIC_AMPLIFY    = 0x100
-    MUSIC_PANSEP     = 0x101
-    MUSIC_PSCALER    = 0x102
-    MUSIC_BPM        = 0x103
-    MUSIC_SPEED      = 0x104
-    MUSIC_VOL_GLOBAL = 0x105
-    MUSIC_ACTIVE     = 0x106
-    MUSIC_VOL_CHAN   = 0x200
-    MUSIC_VOL_INST   = 0x300
+    FREQ             = 0x0000001
+    VOL              = 0x0000002
+    PAN              = 0x0000003
+    EAXMIX           = 0x0000004
+    NOBUFFER         = 0x0000005
+    VBR              = 0x0000006
+    CPU              = 0x0000007
+    SRC              = 0x0000008
+    NET_RESUME       = 0x0000009
+    SCANINFO         = 0x000000A
+    NORAMP           = 0x000000B
+    BITRATE          = 0x000000C
+    MUSIC_AMPLIFY    = 0x0000100
+    MUSIC_PANSEP     = 0x0000101
+    MUSIC_PSCALER    = 0x0000102
+    MUSIC_BPM        = 0x0000103
+    MUSIC_SPEED      = 0x0000104
+    MUSIC_VOL_GLOBAL = 0x0000105
+    MUSIC_ACTIVE     = 0x0000106
+    MUSIC_VOL_CHAN   = 0x0000200
+    MUSIC_VOL_INST   = 0x0000300
+    LOG              = 0x1000000
 
 
 @enum.unique
@@ -269,6 +270,12 @@ def loadLib() -> ctypes.CDLL:
     bass.BASS_ChannelSeconds2Bytes.argtypes = (
         ctypes.c_uint32,
         ctypes.c_double
+    )
+    bass.BASS_ChannelSetAttribute.restype = ctypes.c_bool
+    bass.BASS_ChannelSetAttribute.argtypes = (
+        ctypes.c_uint32,
+        ctypes.c_uint32,
+        ctypes.c_float
     )
     bass.BASS_ChannelSetSync.restype = ctypes.c_uint32
     bass.BASS_ChannelSetSync.argtypes = (
