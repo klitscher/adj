@@ -81,7 +81,7 @@ class Music:
         self._onEnd = SyncCallback(callback)
         bass.BASS_ChannelSetSync(
             self._handle,
-            SyncFlags.END | SyncFlags.ONETIME,
+            SyncFlags.END | SyncFlags.ONETIME | SyncFlags.MIXTIME,
             0,
             self._onEnd,
             None

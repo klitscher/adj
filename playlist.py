@@ -23,7 +23,7 @@ class Playlist (list):
 
     def __init__(self, iterable: collections.abc.Iterable=[], *, seed=None):
         """Construct a new playlist given an iterable of paths to music files.
-        
+
         The optional seed argument determines the random.Random.seed value used
         to shuffle the playlist items."""
         super().__init__(iterable)
@@ -32,6 +32,7 @@ class Playlist (list):
         self.index = 0
         if self.__len__() > 0:
             self.channel = adj.audio.Music(self[0].path)
+            self.channel.onEnd = self.next
 
     def __setitem__(self, key, value):
         if isinstance(key, slice):
@@ -41,12 +42,14 @@ class Playlist (list):
             if self.channel is not None:
                 self.channel.stop()
                 self.channel = adj.audio.Music(self[self.index].path)
+                self.channel.onEnd = self.next
 
     def append(self, song):
         """Add one song to the end of the playlist."""
         super().append(song)
         if self.channel is None:
             self.channel = adj.audio.Music(self[-1].path)
+            self.channel.onEnd = self.next
 
     def copy(self):
         """Return a shallow copy of the playlist."""
@@ -58,10 +61,11 @@ class Playlist (list):
         super().extend(iterable)
         if self.channel is None and self.__len__() > 0:
             self.channel = adj.audio.Music(self[length - 1].path)
+            self.channel.onEnd = self.next
 
     def next(self, fadeOutTime=3.0, fadeInTime=2.0):
         """Skip to the next song in the playlist.
-        
+
         The current song, if any, is stopped before moving to the next one. If
         there are no more songs in the playlist, this method does not play one.
         """
@@ -73,6 +77,7 @@ class Playlist (list):
         self.index = min(self.index + 1, self.__len__())
         if self.index < self.__len__():
             self.channel = adj.audio.Music(self[self.index].path)
+            self.channel.onEnd = self.next
             if playing:
                 self.channel.fadeIn(fadeInTime)
         elif self.__len__() == 0:
@@ -80,7 +85,7 @@ class Playlist (list):
 
     def reverse(self):
         """Reverse the order of the playlist.
-        
+
         The current position in the playlist is preserved and the current
         song keeps playing / remains paused.
         """
@@ -89,7 +94,7 @@ class Playlist (list):
 
     def pop(self, key=-1):
         """Remove a song from the playlist and return it.
-        
+
         If the current song is removed, the playlist skips to the next one.
         Otherwise, the playlist index accounts for the change in size.
         """
@@ -103,7 +108,7 @@ class Playlist (list):
 
     def previous(self):
         """Jump to the previous song in the playlist.
-        
+
         The current song, if any, is stopped before moving to the previous one.
         If there are no songs in the playlist before the current one, this
         method does not play any.
