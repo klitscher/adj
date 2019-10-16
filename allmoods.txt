@@ -1,0 +1,246 @@
+Journey
+01 hope, wilderness
+02 discovery, quiet
+03 quiet, wilderness
+04 quiet, wilderness
+05 discovery, quiet
+06 none
+07 bustle, carnival, town
+08 relief
+09 none
+10 none
+11 none
+12 sadness
+13 none
+14 none
+15 none
+16 eeriness, tension
+17 hope
+18 none
+%
+Mass Effect
+01 adventure, discovery
+02 mystery, stealth
+03 cave, eeriness, quiet
+04 none
+05 dread, failure
+06 adventure, rising
+07 bustle, safety
+08 none
+09 tension
+10 climax, victory
+11 eeriness
+12 none
+13 eeriness
+14 none
+15 tension
+16 mystery
+17 danger, stealth
+18 danger
+19 none
+20 eeriness
+21 none
+22 city
+23 none
+24 finality
+25 wilderness
+26 eeriness
+27 relief, safety
+28 boss, dread, failure, falling
+29 dread
+30 danger
+31 danger
+32 none
+33 climax, military
+34 relief, victory
+35 adventure, finality, victory
+36 finality, victory
+%
+Ori and the Blind Forest
+01 wilderness
+02 carnival, happiness, town
+03 cave, quiet, safety
+04 wilderness
+05 none
+06 wilderness
+07 none
+08 safety, wilderness
+09 reverence
+10 climax, failure
+11 quiet, wilderness
+12 wilderness
+13 hope, rising, wilderness
+14 stealth, wilderness
+15 action, danger, haste
+16 adventure, quiet
+17 action, rising
+18 party, safety
+19 eeriness, quiet, wilderness
+20 cave, eeriness, quiet
+21 discovery
+22 danger, sadness
+23 none
+24 rising, wilderness
+25 discovery
+26 quiet, tension, wilderness
+27 none
+28 danger, haste
+29 action, danger, haste
+30 boss, climax, danger, haste
+31 hope
+32 none
+%
+The Witcher 3: Wild Hunt
+01 adventure, discovery
+02 adventure, hope
+03 dread, quiet
+04 wilderness
+05 eeriness
+06 action
+07 eeriness, mystery
+08 wilderness
+09 sadness
+10 action
+11 none
+12 action
+13 danger
+14 none
+15 none
+16 city, quiet, safety, town
+17 none
+18 discovery
+19 action
+20 mystery
+21 safety, wilderness
+22 action
+23 action
+24 hope, relief
+25 danger, dread, military
+26 bustle, city, town
+27 cave, falling
+28 action, danger, falling
+29 sadness
+30 none
+31 climax, danger
+32 none
+33 wilderness
+34 city, quiet
+35 danger, falling
+36 eeriness, mystery
+37 action, danger, haste
+38 none
+39 cave, falling
+40 danger
+41 safety, town, wilderness
+42 action, boss, haste
+43 safety, town
+44 none
+45 party, town
+46 adventure, hope
+47 none
+48 reverence
+49 action, danger, haste
+50 hope
+51 action, rising
+52 wilderness
+53 action, boss
+54 mystery
+55 party
+56 mystery
+57 action
+58 eeriness
+59 action, party
+60 boss, dread
+%
+Xenoblade Chronicles
+01 finality, hope, sadness
+02 action, haste
+03 action, climax, haste
+04 happiness, safety, town
+05 hope
+06 hope
+07 haste, tension
+08 action, danger, haste
+09 climax
+10 failure, sadness
+11 eeriness, reverence
+12 hope, sadness
+13 danger, haste
+14 mystery
+15 none
+16 tension
+17 cave
+18 boss, climax
+19 discovery, eeriness, mystery
+20 none
+21 carnival, quirk
+22 eeriness, mystery
+23 cave, dread, eeriness, mystery
+24 falling
+25 finality, hope
+26 safety
+27 happiness, hope, relief, victory
+28 cave, eeriness, quiet
+29 stealth
+30 climax, rising
+31 finality, hope
+32 falling, sadness
+33 discovery, dread, tension
+34 cave, eeriness, quiet
+35 boss
+36 danger, dread
+37 victory
+38 finality, hope
+39 finality
+40 none
+41 finality, hope
+42 safety, town, wilderness
+43 quiet, safety, town, wilderness
+44 adventure, wilderness
+45 quiet, wilderness
+46 action, danger, rising
+47 cave, mystery, quiet
+48 adventure, bustle, wilderness
+49 quiet, town, wilderness
+50 relief, town
+51 cave, industry
+52 action, falling, tension
+53 cave
+54 relief, safety
+55 danger, haste
+56 quiet, relief, town
+57 happiness, safety, wilderness
+58 quiet, wilderness
+59 happiness, hope, relief, town
+60 hope, quiet
+61 failure, sadness
+62 quiet, sadness
+63 discovery, nobility, reverence
+64 eeriness, reverence, safety
+65 mystery, quiet
+66 hope, town
+67 dread
+68 danger
+69 action, boss, danger, falling, tension
+70 eeriness, falling, sadness
+71 quiet, relief
+72 military, nobility
+73 military, quiet, stealth
+74 adventure, cave
+75 action, climax, rising
+76 finality, sadness
+77 falling, sadness
+78 bustle, happiness, town
+79 adventure, military
+80 cave, quiet
+81 action, haste, tension
+82 none
+83 quiet, wilderness
+84 dread, military
+85 danger
+86 eeriness, mystery
+87 industry, mystery
+88 adventure, rising
+89 none
+90 haste
+91 happiness, town, victory
