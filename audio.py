@@ -81,7 +81,7 @@ class Music:
         self._onEnd = SyncCallback(callback)
         bass.BASS_ChannelSetSync(
             self._handle,
-            SyncFlags.END | SyncFlags.ONETIME,
+            SyncFlags.END | SyncFlags.ONETIME | SyncFlags.MIXTIME,
             0,
             self._onEnd,
             None
@@ -132,12 +132,12 @@ class Music:
         bass.BASS_ChannelPlay(self._handle, False)
         bass.BASS_ChannelSlideAttribute(
             self._handle,
-            Attributes.VOL,
+            Attributes.VOL | Attributes.LOG,
             1,
             time
         )
 
-    def fadeOut(self, time: float=2.0):
+    def fadeOut(self, time: float=3.0):
         """Fade out the song over some amount of seconds, stopping it.
 
         When the song finishes fading out, it is freed and considered stopped.
@@ -151,7 +151,7 @@ class Music:
             time = int(time * 1000)
             bass.BASS_ChannelSlideAttribute(
                 self._handle,
-                Attributes.VOL,
+                Attributes.VOL | Attributes.LOG,
                 -1,
                 time
             )
