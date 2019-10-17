@@ -1,0 +1,21 @@
+<adjTabs>
+        size_hint: 1, 1
+        do_default_tab: False
+
+        TabbedPanelItem:
+                text: 'Filters'
+                BoxLayout:
+                        orientation: 'vertical'
+                        StackLayout:
+                                id: mood_grid
+                                orientation: 'lr-tb'
+                                spacing: 1, 1
+                        Label:
+                                text: 'First tab content area'
+        TabbedPanelItem:
+                text: 'Playlist'
+                BoxLayout:
+                        Label:
+                                text: 'Second tab content area'
+                        Button:
+                                text: 'Button that does nothing'
