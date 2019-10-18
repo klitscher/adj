@@ -6,11 +6,8 @@ import os
 import re
 
 
-def populateMusic(music_root, db_obj):
+def populateMusic(music_root, db_obj, albums):
     """parse user music and store matching items in db"""
-
-    path = os.path.join(adj.path, 'allmoods.txt')
-    albums = adj.masterlist.parseMasterList(path)
 
     for dirpath, dirnames, filenames in os.walk(music_root):
         for filename in filenames:
