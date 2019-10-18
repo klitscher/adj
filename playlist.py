@@ -51,6 +51,14 @@ class Playlist (list):
             self.channel = adj.audio.Music(self[-1].path)
             self.channel.onEnd = self.next
 
+    def clear(self):
+        """Empty the playlist, stopping any playing song."""
+        super().clear()
+        self.index = 0
+        if self.channel is not None:
+            self.channel.stop()
+            self.channel = None
+
     def copy(self):
         """Return a shallow copy of the playlist."""
         return Playlist(super().copy())
