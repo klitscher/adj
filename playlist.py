@@ -105,11 +105,3 @@ class Playlist (list):
             self.index -= 1
         if 0 > key <= self.index - self.__len__():
             self.index -= 1
-
-    def previous(self):
-        """Jump to the previous song in the playlist.
-
-        The current song, if any, is stopped before moving to the previous one.
-        If there are no songs in the playlist before the current one, this
-        method does not play any.
-        """
