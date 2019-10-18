@@ -1,46 +1,47 @@
 <adjTabs>
-	size_hint: 1, 1
-        do_default_tab: False
+    size_hint: 1, 1
+    do_default_tab: False
 
-        # Root Level
+    # Root Level
+    BoxLayout:
+        # Leftmost container
         BoxLayout:
-                # Leftmost container
-                BoxLayout:#
-                        spacing: 5
-                        orientation: 'vertical'
-                        # Music control/info 
-                        BoxLayout:
-                                size_hint: 1, .15
-                                # Play/stop and skip
-                                BoxLayout:
-                                        size_hint_x: None
-                                        width: dp(200)
-                                        spacing: 1
-                                        Button:
-                                                id: play
-                                                text: 'Play'
-                                        Button:
-                                                id: skip
-                                                text: 'Next Song'
-                                # Title and album
-                                BoxLayout:
-                                        orientation: 'vertical'
-                                        Label:
-                                                id: title
-                                                size_hint: .25, .5
-                                                text: 'Title'
-                                        Label:
-                                                id: album
-                                                size_hint: .25, .5
-                                                text: 'Album'
-                        # List of moods
-                        StackLayout:
-                                id: mood_grid
-                                orientation: 'lr-tb'
-                                spacing: 1, 1
+            spacing: 5
+            orientation: 'vertical'
+            # Music control/info 
+            BoxLayout:
+                size_hint: 1, .15
+                # Play/stop and skip
                 BoxLayout:
-                        orientation: 'vertical'
-                        Label:
-                                text: 'Second tab content area'
-                        Button:
-                                text: 'Button that does nothing'
+                    size_hint_x: None
+                    width: dp(200)
+                    spacing: 1
+                    Button:
+                        id: play
+                        text: 'Play'
+                    Button:
+                        id: skip
+                        text: 'Next Song'
+                # Title and album
+                BoxLayout:
+                    orientation: 'vertical'
+                    Label:
+                        id: title
+                        size_hint: .25, .5
+                        text: 'Title'
+                    Label:
+                        id: album
+                        size_hint: .25, .5
+                        text: 'Album'
+            # List of moods
+            StackLayout:
+                id: mood_grid
+                orientation: 'lr-tb'
+                spacing: 1, 1
+        # right half container
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text: 'Second tab content area'
+            Button:
+                text: 'Button that does nothing'
