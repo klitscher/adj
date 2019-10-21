@@ -16,12 +16,18 @@ import string
 
 
 def subProcMain():
+    """Entry point for the configuration screen's subprocess."""
     ConfigApp().run()
 
 
 if adj.platform.os == 'windows':
     class WindowsDrives (kivy.uix.stacklayout.StackLayout):
+        """A stack of buttons listing the drives available on Windows.
+        
+        This is necessary because Kivy's file browser isn't aware of drives.
+        """
         def __init__(self, **kwargs):
+            """Create a row of buttons to allow selecting Windows drives."""
             super().__init__(**kwargs)
             self.orientation = 'lr-tb'
             self.size_hint_y = .1
@@ -39,16 +45,28 @@ if adj.platform.os == 'windows':
                 self.add_widget(button)
 
         def changeDrive(self, button):
+            """Tell the file browser to switch Windows drives.
+            
+            This is used as the callback for the drive buttons ("C:", "E:").
+            It also clears the current selected file.
+            """
             self.parent.ids.browser.path = button.text
             self.parent.ids.browser.selection = []
 
 
 class ConfigWidget (kivy.uix.boxlayout.BoxLayout):
+    """Root widget for the configuration screen."""
+
     def on_start(self):
+        """If running on Windows, creates buttons to switch drives."""
         if adj.platform.os == 'windows':
             self.add_widget(WindowsDrives(), 2)
 
     def chooseLibrary(self):
+        """Loads music from the provided directory, populating the database.
+        
+        This is used as the "Choose Library" button callback.
+        """
         if len(self.ids.browser.selection) > 0:
             libraryPath = self.ids.browser.selection[0]
             listPath = os.path.join(adj.path, 'allmoods.txt')
@@ -59,18 +77,18 @@ class ConfigWidget (kivy.uix.boxlayout.BoxLayout):
             db.close()
             kivy.app.App.get_running_app().stop()
 
-    def toggleButton(self):
-        self.ids.select.disabled = len(self.ids.browser.selection) < 1
-
     def onlyDirectories(self, dirName, fileName):
+        """Reject all files so only directories are selectable."""
         return False
 
 
 class ConfigApp (kivy.app.App):
     def build(self):
+        """Create the root widget."""
         adj.audio.init(0)
         self.root = ConfigWidget()
         return self.root
 
     def on_start(self):
+        """Signal the root widget that it can safely initialize."""
         self.root.on_start()
