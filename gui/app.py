@@ -19,12 +19,10 @@ class MainWidget (kivy.uix.boxlayout.BoxLayout):
 
     def on_start(self):
         self.db = adj.db.DataBase(os.path.join(adj.path, 'adj.db'))
-        self.db.createTables()
-        adj.masterlist.parseMasterList(
-            os.path.join(adj.path, 'allmoods.txt'),
-            self.db
-        )
-        self.playlist = adj.playlist.Playlist()
+        self.playlist = adj.playlist.Playlist(self.db.filterMusic({'climax': True}))
+        self.playlist.onEnd = self.ids.left.songChanged
+        self.ids.left.songChanged(self.playlist[0])
+        self.playlist.channel.play()
 
 
 class MainApp (kivy.app.App):

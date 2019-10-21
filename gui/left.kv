@@ -8,7 +8,7 @@
 		size_hint: 1, .15
 		# Play/stop and skip
 		BoxLayout:
-			size_hint_x: None
+			size_hint: None, 1
 			width: dp(200)
 			spacing: 1
 			Button:
@@ -22,11 +22,11 @@
 			orientation: 'vertical'
 			Label:
 				id: title
-				size_hint: .25, .5
+				size_hint: 1, 1
 				text: 'Title'
 			Label:
 				id: album
-				size_hint: .25, .5
+				size_hint: 1, 1
 				text: 'Album'
 	# List of moods
 	StackLayout:
