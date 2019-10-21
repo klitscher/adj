@@ -1,3 +1,4 @@
+"""Module to create the GUI"""
 import adj
 import adj.db
 import adj.masterlist
@@ -14,10 +15,12 @@ kivy.lang.Builder.load_file(os.path.join(adj.path, 'gui', 'adj.kv'))
 
 
 class MainWidget (kivy.uix.boxlayout.BoxLayout):
+    """Root of all the widgets"""
     db = None
     playlist = None
 
     def on_start(self):
+        """Initialization function for widgets"""
         self.db = adj.db.DataBase(os.path.join(adj.path, 'adj.db'))
         self.playlist = adj.playlist.Playlist(self.db.filterMusic({'climax': True}))
         self.playlist.onEnd = self.ids.left.songChanged
@@ -26,10 +29,15 @@ class MainWidget (kivy.uix.boxlayout.BoxLayout):
 
 
 class MainApp (kivy.app.App):
+    """Kivy application"""
+
     def build(self):
+        """Builds the gui"""
         self.root = MainWidget()
         return self.root
+    
     def on_start(self, root=None):
+        """Initialization of app"""
         if root is None:
             self.root.on_start()
             root = self.root
