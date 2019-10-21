@@ -9,6 +9,7 @@ class Playlist (list):
     _random = random.Random()
     channel = None
     index = 0
+    onEnd = None
 
     def __delitem__(self, key):
         if isinstance(key, slice):
@@ -51,6 +52,14 @@ class Playlist (list):
             self.channel = adj.audio.Music(self[-1].path)
             self.channel.onEnd = self.next
 
+    def clear(self):
+        """Empty the playlist, stopping any playing song."""
+        super().clear()
+        self.index = 0
+        if self.channel is not None:
+            self.channel.stop()
+            self.channel = None
+
     def copy(self):
         """Return a shallow copy of the playlist."""
         return Playlist(super().copy())
@@ -80,6 +89,10 @@ class Playlist (list):
             self.channel.onEnd = self.next
             if playing:
                 self.channel.fadeIn(fadeInTime)
+            else:
+                self.channel.play()
+            if self.onEnd is not None:
+                self.onEnd(self[self.index])
         elif self.__len__() == 0:
             self.channel = None
 
