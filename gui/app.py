@@ -6,11 +6,12 @@ import adj.playlist
 import adj.gui.leftwidget
 import adj.gui.rightwidget
 import kivy.app
+from kivy.config import Config
 import kivy.lang
 import kivy.uix.boxlayout
 import os.path
 
-
+Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 kivy.lang.Builder.load_file(os.path.join(adj.path, 'gui', 'adj.kv'))
 
 

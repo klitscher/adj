@@ -1,4 +1,5 @@
 """Module for left side of GUI"""
+import adj
 import kivy.uix.boxlayout
 from kivy.metrics import dp
 from kivy.uix.button import Button
@@ -6,12 +7,17 @@ from kivy.uix.button import Button
 
 class LeftWidget (kivy.uix.boxlayout.BoxLayout):
     """Left side of gui class"""
+
+    mood_dict = {}
     
     def on_start(self):
         """Set up for GUI"""
         self.mood_list = sorted(self.parent.db.getMoods())
         for mood in self.mood_list:
-            button = Button(text=mood, width=dp(100), size_hint=(None, .1))
+            button = Button(text=mood,
+                            width=dp(100),
+                            size_hint=(None, .1))
+            button.bind(on_press=self.filter)
             self.ids.mood_grid.add_widget(button)
         
     def songChanged(self, song):
@@ -31,3 +37,11 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
     def nextSong(self):
         """Skip to the next song in the playlist"""
         self.parent.playlist.next()
+
+    def filter(self, button):
+        """Callback function for clicking on moods"""
+        if button.last_touch.button == 'left':
+            self.mood_dict[button.text] = True
+        else:
+            self.mood_dict.pop(button.text, None)
+        
