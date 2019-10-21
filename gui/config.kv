@@ -1,0 +1,14 @@
+<ConfigWidget>
+    orientation: 'vertical'
+    Label:
+        text: 'This appears to be your first run. Please locate your music library.'
+        size_hint_y: .1
+    FileChooserListView:
+        dirselect: True
+        id: browser
+        filters: root.onlyDirectories,
+    Button:
+        id: select
+        on_press: root.chooseLibrary()
+        size_hint_y: .1
+        text: 'Choose Library'
