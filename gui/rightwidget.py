@@ -23,6 +23,7 @@ class RightWidget (kivy.uix.boxlayout.BoxLayout):
         """query the db for list of songs matching filter"""
         if len(mood_dict) == 0:
             self.song_list = []
+            self.ids.alt_plst.data = []
             return 
         self.song_list = self.parent.db.filterMusic(mood_dict)
         self.ids.alt_plst.data = [{'text': song.title} for song in self.song_list]
