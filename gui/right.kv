@@ -1,6 +1,37 @@
+<Song@Label>
+	text_size: self.size
+	halign: 'left'
+	valign: 'middle'
+	# color: 0, 0, 0, 1
+	# canvas:
+	# 	Color:
+	# 		rgb: 1, 1, 1
+	# 	Rectangle:
+	# 		size: self.size
+	# 		pos: self.pos
+
 <RightWidget>
 	orientation: 'vertical'
-	Button:
-		size_hint_y: 9
-	Button:
+	#display number of songs in given playlist
+	Label:
 		size_hint_y: 1
+		id: num_songs
+		text: 'num_songs'
+	#display dynamic playlist
+	RecycleView:
+		viewclass: 'Song'
+		size_hint_y: 8
+		id: alt_plst
+		RecycleBoxLayout:
+			default_size: None, dp(30)
+			default_size_hint: 1, None
+			size_hint_y: None
+			height: self.minimum_height
+			orientation: 'vertical'
+	#button for user to activate playlist with given filters
+	Button:
+		disabled: True
+		size_hint_y: 1
+		text: 'ACTIVATE'
+		on_press: root.activate_playlist()
+		id: activate
