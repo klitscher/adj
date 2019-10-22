@@ -61,6 +61,9 @@ class ConfigWidget (kivy.uix.boxlayout.BoxLayout):
         if adj.platform.os == 'windows':
             self.add_widget(WindowsDrives(), 2)
 
+    def changeSelection(self):
+        """Update the text box with the current selection."""
+
     def chooseLibrary(self):
         """Loads music from the provided directory, populating the database.
         
