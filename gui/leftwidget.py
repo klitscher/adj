@@ -44,4 +44,4 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
             self.mood_dict[button.text] = True
         else:
             self.mood_dict.pop(button.text, None)
-        
+        print(self.mood_dict)

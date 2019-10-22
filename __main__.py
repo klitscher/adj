@@ -5,6 +5,8 @@ import adj.gui.firstrun
 import multiprocessing
 import os.path
 
+if adj.platform.os == 'mac':
+    multiprocessing.set_start_method('spawn')
 
 adj.audio.init()
 if not os.path.isfile(os.path.join(adj.path, 'adj.db')):
