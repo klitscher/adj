@@ -1,7 +1,16 @@
 <Song@Label>
-	text_size: self.size
+	id: song
 	halign: 'left'
 	valign: 'middle'
+	size_hint_y: None
+	text_size: self.width, None
+	height: self.texture_size[1]
+	canvas:
+		Color:
+			rgb: 1, 0, 0
+		Rectangle:
+			pos: 0, song.y + song.height
+			size: song.width, 2
 
 <RightWidget>
 	orientation: 'vertical'
