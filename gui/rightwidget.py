@@ -24,7 +24,7 @@ class RightWidget (kivy.uix.boxlayout.BoxLayout):
         if len(mood_dict) == 0:
             self.song_list = []
             self.ids.alt_plst.data = []
-            return 
+            return self.parent.db.getMoods()
         self.song_list = self.parent.db.filterMusic(mood_dict)
         self.ids.alt_plst.data = [{'text': song.title} for song in self.song_list]
         moods = functools.reduce(set.union, (song.moods for song in self.song_list), set())
