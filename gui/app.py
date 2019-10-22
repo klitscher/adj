@@ -23,10 +23,12 @@ class MainWidget (kivy.uix.boxlayout.BoxLayout):
     def on_start(self):
         """Initialization function for widgets"""
         self.db = adj.db.DataBase(os.path.join(adj.path, 'adj.db'))
-        self.playlist = adj.playlist.Playlist()
+        self.playlist = adj.playlist.Playlist(self.db.filterMusic({'haste': True}))
 
     def switchPlaylist(self, playlist):
         """switch the playlist from the current one to the one selected by the user"""
+        if len(self.playlist) > 0:
+            self.playlist.channel.stop()
         self.playlist = playlist
         self.playlist.onEnd = self.ids.left.songChanged
         self.ids.left.songChanged(self.playlist[0])
