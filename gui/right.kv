@@ -30,6 +30,8 @@
 			orientation: 'vertical'
 	#button for user to activate playlist with given filters
 	Button:
+		disabled: True
 		size_hint_y: 1
 		text: 'ACTIVATE'
-
+		on_press: root.activate_playlist()
+		id: activate
