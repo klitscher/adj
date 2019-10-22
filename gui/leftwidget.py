@@ -19,7 +19,6 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
             button = FilterButton(text=mood,
                             width=dp(100),
                             size_hint=(None, .1))
-            button.on_start()
             button.bind(on_press=self.filter)
             self.ids.mood_grid.add_widget(button)
         
@@ -27,9 +26,12 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
         """Change the displayed and playing song"""
         self.ids.title.text = song.title
         self.ids.album.text = song.album
+        self.ids.play.text = 'Pause'
 
     def playPause(self):
         """Plays or pauses a song based on its state"""
+        if self.parent.playlist.channel is None:
+            return
         if self.parent.playlist.channel.playing == True:
             self.parent.playlist.channel.pause()
             self.ids.play.text = 'Play'
@@ -39,18 +41,23 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
 
     def nextSong(self):
         """Skip to the next song in the playlist"""
+        if self.parent.playlist.channel is None:
+            return
         self.parent.playlist.next()
 
     def filter(self, button):
         """Callback function for clicking on moods"""
-        states = ['available', 'unavailable', 'included', 'excluded']
         if button.filterState == 'unavailable':
             pass
         else:
-            if button.filterState == 'included' and button.last_touch.button == 'left':
+            if (button.filterState == 'included' and
+                button.last_touch.button == 'left'
+            ):
                 self.mood_dict.pop(button.text, None)
                 button.filterState = 'available'
-            elif button.filterState == 'excluded' and button.last_touch.button == 'right':
+            elif (button.filterState == 'excluded' and
+                  button.last_touch.button == 'right'
+            ):
                 self.mood_dict.pop(button.text, None)
                 button.filterState = 'available'
             elif button.last_touch.button == 'left':
@@ -59,21 +66,26 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
             elif button.last_touch.button == 'right':
                 self.mood_dict[button.text] = False
                 button.filterState = 'excluded'
-        print(self.mood_dict)
-
+            available_moods = self.parent.ids.right.get_playlist(self.mood_dict)
+            for childButton in self.ids.mood_grid.children:
+                if childButton.filterState in ('included', 'excluded'):
+                    continue
+                if childButton.text in available_moods:
+                    childButton.filterState = 'available'
+                else:
+                    childButton.filterState = 'unavailable'
+                    
 class FilterButton(ButtonBehavior, Widget):
     """Class for custom buttons"""
 
     filterState = StringProperty('available')
+    text = StringProperty('default')
     
     def __init__(self, **kwargs):
         """Initializtion of button instance"""
         self.text = kwargs.pop('text', 'default')
         super().__init__(**kwargs)
 
-    def on_start(self):
-        self.label.text = self.text
-    
     def on_filterState(self, _, state):
         """Changes button color based on state"""
         if state == 'unavailable':
