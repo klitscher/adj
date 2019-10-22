@@ -2,13 +2,6 @@
 	text_size: self.size
 	halign: 'left'
 	valign: 'middle'
-	# color: 0, 0, 0, 1
-	# canvas:
-	# 	Color:
-	# 		rgb: 1, 1, 1
-	# 	Rectangle:
-	# 		size: self.size
-	# 		pos: self.pos
 
 <RightWidget>
 	orientation: 'vertical'
@@ -16,7 +9,8 @@
 	Label:
 		size_hint_y: 1
 		id: num_songs
-		text: 'num_songs'
+		text: ''
+		markup: True
 	#display dynamic playlist
 	RecycleView:
 		viewclass: 'Song'
