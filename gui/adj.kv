@@ -1,17 +1,29 @@
 #:include adj/gui/left.kv
 #:include adj/gui/right.kv
+#:include adj/gui/songs.kv
 
 
 <MainWidget>
     size_hint: 1, 1
-    LeftWidget:
-        db: root.db
-        id: left
+    filterView: filterView
+    playlistView: playlistView
+    SongViewer:
+        id: playlistView
+        leftWidget: left
         playlist: root.playlist
-        sibling: right
-    RightWidget:
-        currentPlaylist: root.playlist
-        db: root.db
-        id: right
-        on_currentPlaylist: root.playlist = self.currentPlaylist
-        sibling: left
+        on_playlist: self.on_activate()
+    BoxLayout:
+        id: filterView
+        LeftWidget:
+            db: root.db
+            id: left
+            main: root
+            playlist: root.playlist
+            sibling: right
+        RightWidget:
+            currentPlaylist: root.playlist
+            db: root.db
+            id: right
+            main: root
+            on_currentPlaylist: root.playlist = self.currentPlaylist
+            sibling: left

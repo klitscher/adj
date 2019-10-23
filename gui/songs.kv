@@ -1,0 +1,64 @@
+<Song@Label>
+	halign: 'left'
+	valign: 'middle'
+	size_hint_y: None
+	text_size: self.width, None
+	height: self.texture_size[1]
+	canvas.before:
+		Color:
+			rgb: 1, 0, 0
+		Rectangle:
+			pos: 0, self.y + self.height - 5
+			size: self.width, 2
+<SongInfo@Widget>
+    orientation: 'horizontal'
+    Song:
+        text: self.parent.title
+    Song:
+        text: self.parent.album
+    Song:
+        text: self.parent.track
+
+# window for current playlist options
+<SongViewer>
+    size_hint: 1, 1
+    spacing: 5
+    orientation: 'vertical'
+    # Music control/info 
+    BoxLayout:
+        size_hint: 1, 1
+        # Play/stop and skip
+        BoxLayout:
+            size_hint: None, 1
+            width: dp(200)
+            spacing: 1
+            Button:
+                id: play
+                text: 'Play'
+                on_press: root.leftWidget.playPause()
+            Button:
+                id: skip
+                text: 'Next Song'
+                on_press: root.leftWidget.nextSong()
+        # Title and album
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                id: title
+                size_hint: 1, 1
+                text: 'Title'
+            Label:
+                id: album
+                size_hint: 1, 1
+                text: 'Album'
+    #display dynamic playlist
+	RecycleView:
+		viewclass: 'SongInfo'
+		size_hint: 1, 17/3
+		id: current_plst
+		RecycleBoxLayout:
+			default_size: None, dp(30)
+			default_size_hint: 1, None
+			size_hint_y: None
+			height: self.minimum_height
+			orientation: 'vertical'

@@ -2,6 +2,7 @@
 import adj
 import kivy.uix.boxlayout
 from kivy.clock import mainthread
+from kivy.input import MotionEvent
 from kivy.metrics import dp
 from kivy.uix.button import Button
 from kivy.uix.behaviors import ButtonBehavior
@@ -16,6 +17,7 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
     def on_start(self):
         """Set up for GUI"""
         self.mood_list = sorted(self.db.getMoods())
+        self.ids.playBar.bind(on_touch_down=self.switchView)
         for mood in self.mood_list:
             button = FilterButton(text=mood,
                             width=dp(100),
@@ -76,6 +78,10 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
                     childButton.filterState = 'available'
                 else:
                     childButton.filterState = 'unavailable'
+
+    def switchView(self, _, touch: MotionEvent):
+        if self.ids.playBar.collide_point(touch.x, touch.y):
+            self.main.switch_view('playlist')
                     
 class FilterButton(ButtonBehavior, Widget):
     """Class for custom buttons"""

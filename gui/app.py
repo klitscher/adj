@@ -5,6 +5,7 @@ import adj.masterlist
 import adj.playlist
 import adj.gui.leftwidget
 import adj.gui.rightwidget
+import adj.gui.songview
 import kivy.app
 import kivy.config
 import kivy.lang
@@ -28,6 +29,7 @@ class MainWidget (kivy.uix.boxlayout.BoxLayout):
         """Initialization function for widgets"""
         self.db = adj.db.DataBase(os.path.join(adj.path, 'adj.db'))
         self._playlist = self.playlist
+        self.remove_widget(self.playlistView)
 
     def on_playlist(self, _, playlist):
         """switch the playlist from the current one to the one selected by the user"""
@@ -37,6 +39,14 @@ class MainWidget (kivy.uix.boxlayout.BoxLayout):
         playlist.onEnd = self.ids.left.songChanged
         self.ids.left.songChanged(playlist[0])
         playlist.channel.play()
+
+    def switch_view(self, which):
+        if which == 'filter':
+            self.remove_widget(self.playlistView)
+            self.add_widget(self.filterView)
+        elif which == 'playlist':
+            self.remove_widget(self.filterView)
+            self.add_widget(self.playlistView)
 
 
 class MainApp (kivy.app.App):
