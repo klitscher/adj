@@ -1,0 +1,60 @@
+<LeftWidget>
+    # layout
+    size_hint: 17/3, 1
+    spacing: 5
+    orientation: 'vertical'
+    # Music control/info 
+    BoxLayout:
+        size_hint: 1, .15
+        # Play/stop and skip
+        BoxLayout:
+            size_hint: None, 1
+            width: dp(200)
+            spacing: 1
+            Button:
+                id: play
+                text: 'Play'
+                on_press: root.playPause()
+            Button:
+                id: skip
+                text: 'Next Song'
+                on_press: root.nextSong()
+        # Title and album
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                id: title
+                size_hint: 1, 1
+                text: 'Title'
+            Label:
+                id: album
+                size_hint: 1, 1
+                text: 'Album'
+    # List of moods
+    StackLayout:
+        id: mood_grid
+        orientation: 'lr-tb'
+        spacing: 1, 1
+
+<FilterButton>
+    borderColor: .4, .4, .4
+    fillColor: .4, .4, .4
+    canvas:
+        Color:
+            rgb: self.borderColor
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+        Color:
+            rgb: self.fillColor
+        RoundedRectangle:
+            pos: self.pos[0] + self.size[1] * .1, self.pos[1] + self.size[1] * .1
+            size: self.size[0] - self.size[1] * .2, self.size[1] * .8
+        
+    Label:
+        color: 1, 1, 1, 1
+        pos: root.pos
+        size: root.size
+        size_hint: None, None
+        text: root.text
+    
