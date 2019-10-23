@@ -53,5 +53,5 @@ def parseMasterList(filePath, db_obj):
                 allMoods.update(moods)
                 tracks[track] = moods
     for mood in allMoods:
-        db_obj.insertMoodRow(mood)
+        db_obj.insertMood(mood)
     return albums
