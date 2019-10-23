@@ -3,15 +3,15 @@
 
 
 <MainWidget>
-	size_hint: 1, 1
-	LeftWidget:
+    size_hint: 1, 1
+    LeftWidget:
         db: root.db
-		id: left
+        id: left
         playlist: root.playlist
         sibling: right
-	RightWidget:
+    RightWidget:
         currentPlaylist: root.playlist
         db: root.db
-		id: right
+        id: right
         on_currentPlaylist: root.playlist = self.currentPlaylist
         sibling: left
