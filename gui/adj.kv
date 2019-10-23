@@ -1,10 +1,17 @@
-#:include gui/left.kv
-#:include gui/right.kv
+#:include adj/gui/left.kv
+#:include adj/gui/right.kv
 
 
 <MainWidget>
 	size_hint: 1, 1
 	LeftWidget:
+        db: root.db
 		id: left
+        playlist: root.playlist
+        sibling: right
 	RightWidget:
+        currentPlaylist: root.playlist
+        db: root.db
 		id: right
+        on_currentPlaylist: root.playlist = self.currentPlaylist
+        sibling: left

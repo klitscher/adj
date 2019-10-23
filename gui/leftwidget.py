@@ -1,6 +1,7 @@
 """Module for left side of GUI"""
 import adj
 import kivy.uix.boxlayout
+from kivy.clock import mainthread
 from kivy.metrics import dp
 from kivy.uix.button import Button
 from kivy.uix.behaviors import ButtonBehavior
@@ -14,14 +15,15 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
     
     def on_start(self):
         """Set up for GUI"""
-        self.mood_list = sorted(self.parent.db.getMoods())
+        self.mood_list = sorted(self.db.getMoods())
         for mood in self.mood_list:
             button = FilterButton(text=mood,
                             width=dp(100),
                             size_hint=(None, .1))
             button.bind(on_press=self.filter)
             self.ids.mood_grid.add_widget(button)
-        
+
+    @mainthread
     def songChanged(self, song):
         """Change the displayed and playing song"""
         self.ids.title.text = song.title
@@ -30,20 +32,20 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
 
     def playPause(self):
         """Plays or pauses a song based on its state"""
-        if self.parent.playlist.channel is None:
+        if self.playlist.channel is None:
             return
-        if self.parent.playlist.channel.playing == True:
-            self.parent.playlist.channel.pause()
+        if self.playlist.channel.playing == True:
+            self.playlist.channel.pause()
             self.ids.play.text = 'Play'
         else:
-            self.parent.playlist.channel.play()
+            self.playlist.channel.play()
             self.ids.play.text = 'Pause'
 
     def nextSong(self):
         """Skip to the next song in the playlist"""
-        if self.parent.playlist.channel is None:
+        if self.playlist.channel is None:
             return
-        self.parent.playlist.next()
+        self.playlist.next()
 
     def filter(self, button):
         """Callback function for clicking on moods"""
@@ -66,7 +68,7 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
             elif button.last_touch.button == 'right':
                 self.mood_dict[button.text] = False
                 button.filterState = 'excluded'
-            available_moods = self.parent.ids.right.get_playlist(self.mood_dict)
+            available_moods = self.sibling.get_playlist(self.mood_dict)
             for childButton in self.ids.mood_grid.children:
                 if childButton.filterState in ('included', 'excluded'):
                     continue

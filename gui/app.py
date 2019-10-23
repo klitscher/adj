@@ -6,33 +6,37 @@ import adj.playlist
 import adj.gui.leftwidget
 import adj.gui.rightwidget
 import kivy.app
-from kivy.config import Config
+import kivy.config
 import kivy.lang
+import kivy.properties
 import kivy.uix.boxlayout
 import os.path
 
-Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
+kivy.config.Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 kivy.lang.Builder.load_file(os.path.join(adj.path, 'gui', 'adj.kv'))
 
 
 class MainWidget (kivy.uix.boxlayout.BoxLayout):
     """Root of all the widgets"""
-    db = None
-    playlist = None
+    db = kivy.properties.ObjectProperty(None, baseclass=adj.db.DataBase)
+    playlist = kivy.properties.ObjectProperty(
+        adj.playlist.Playlist(),
+        baseclass=adj.playlist.Playlist
+    )
 
     def on_start(self):
         """Initialization function for widgets"""
         self.db = adj.db.DataBase(os.path.join(adj.path, 'adj.db'))
-        self.playlist = adj.playlist.Playlist()
+        self._playlist = self.playlist
 
-    def switchPlaylist(self, playlist):
+    def on_playlist(self, _, playlist):
         """switch the playlist from the current one to the one selected by the user"""
-        if len(self.playlist) > 0:
-            self.playlist.channel.stop()
-        self.playlist = playlist
-        self.playlist.onEnd = self.ids.left.songChanged
-        self.ids.left.songChanged(self.playlist[0])
-        self.playlist.channel.play()
+        if len(self._playlist) > 0:
+            self._playlist.channel.stop()
+        self._playlist = playlist
+        playlist.onEnd = self.ids.left.songChanged
+        self.ids.left.songChanged(playlist[0])
+        playlist.channel.play()
 
 
 class MainApp (kivy.app.App):
