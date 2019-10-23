@@ -2,6 +2,8 @@
 
 import os
 
+os.system('cp adj/install/linux/libtags.so adj/install/linux/libbass.so adj/')
+
 block_cipher = None
 
 
@@ -44,6 +46,5 @@ coll = COLLECT(exe,
 
 os.rename('./dist/__main__/__main__', './dist/__main__/adj.exe')
 os.rename('./dist/__main__', './dist/adj_package')
-os.system('cp adj/install/linux/libtags.so adj/install/linux/libbass.so adj/')
-os.system('cp adj/install/linux/linux.spec .')
+
 
