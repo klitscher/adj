@@ -2,6 +2,7 @@
 
 import adj
 import collections
+import itertools
 import os
 import sqlite3
 import typing
@@ -9,7 +10,7 @@ import typing
 
 Music = collections.namedtuple(
     'Music',
-    ('title', 'album', 'number', 'path', 'moods')
+    ('id', 'title', 'album', 'number', 'path', 'moods')
 )
 
 
@@ -33,6 +34,38 @@ class DataBase:
         if commit:
             self._conn.commit()
         self._conn.close()
+
+    def changeMoods(self, song: Music):
+        """Change the moods associated with a song.
+        
+        The song parameter represents the desired song information. Its "id"
+        attribute is used to look up the song record to update, and its "moods"
+        attribute is used to remove moods not listed there and add ones that
+        are.
+        """
+        queryDelete = "DELETE FROM music_moods WHERE track = ? and mood in ({})"
+        queryInsert = "INSERT INTO music_moods (track, mood) VALUES {}"
+        querySelect = "SELECT mood FROM music_moods WHERE track = ?"
+        newMoods = song.moods
+        cursor = self._conn.execute(querySelect, (song.id,))
+        oldMoods = set(row[0] for row in cursor.fetchall())
+        diff = oldMoods - newMoods
+        if len(diff) > 0:
+            queryDelete = queryDelete.format(
+                ', '.join('?' for _ in range(len(diff)))
+            )
+            self._conn.execute(queryDelete, (song.id,) + tuple(diff))
+        diff = newMoods - oldMoods
+        if len(diff) > 0:
+            queryInsert = queryInsert.format(
+                ', '.join('(?, ?)' for _ in range(len(diff)))
+            )
+            params = tuple(
+                item
+                for pair in zip(itertools.repeat(song.id), diff)
+                for item in pair
+            )
+            self._conn.execute(queryInsert, params)
 
     def createTables(self):
         """Method to create tables in database"""
@@ -68,7 +101,7 @@ class DataBase:
         is True, only songs with that mood are returned.
         """
         query = '''
-            SELECT title, album, number, path, group_concat(mood, "\x1F")
+            SELECT id, title, album, number, path, group_concat(mood, "\x1F")
             FROM music JOIN music_moods ON track = id GROUP BY id
         '''
         if len(filter) > 0:
@@ -82,8 +115,8 @@ class DataBase:
             tuple(mood for mood in filter.keys())
         )
         return [
-            Music(title, album, number, path, set(moods.split('\x1F')))
-            for title, album, number, path, moods in cursor.fetchall()
+            Music(id, title, album, number, path, set(moods.split('\x1F')))
+            for id, title, album, number, path, moods in cursor.fetchall()
         ]
 
     def getMoods(self) -> typing.Set[str]:
@@ -103,7 +136,7 @@ class DataBase:
         else:
             where = ''
         cursor = self._conn.execute(
-            'SELECT title, album, number, path FROM music' + where,
+            'SELECT id, title, album, number, path FROM music' + where,
             tuple(value for name, value in filters if value is not None)
         )
         return [Music(*row + (set(),)) for row in cursor.fetchall()]
