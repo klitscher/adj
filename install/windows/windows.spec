@@ -5,11 +5,11 @@ from kivy_deps import sdl2, glew
 
 block_cipher = None
 
-
-a = Analysis(['adj\\__main__.py'],
-             pathex=['.'],
-             binaries=[('adj\\install\\windows\\bass.dll', '.'), ('adj\\install\\windows\\tags.dll', '.')],
-             datas=[('adj\\gui\\adj.kv', 'adj\\gui'), ('adj\\gui\\left.kv', 'adj\\gui'), ('adj\\gui\\right.kv', 'adj\\gui'), ('adj\\gui\\config.kv', 'adj\\gui'), ('adj\\allmoods.txt', 'adj')],
+base = os.getcwd() + '\\'
+a = Analysis([base + 'adj\\__main__.py'],
+             pathex=[os.getcwd()],
+             binaries=[(base + 'adj\\install\\windows\\bass.dll', '.'), (base + 'adj\\install\\windows\\tags.dll', '.')],
+             datas=[(base + 'adj\\gui\\adj.kv', 'adj\\gui'), (base + 'adj\\gui\\left.kv', 'adj\\gui'), (base + 'adj\\gui\\right.kv', 'adj\\gui'), (base + 'adj\\gui\\config.kv', 'adj\\gui'), (base + 'adj\\allmoods.txt', 'adj')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -40,5 +40,5 @@ coll = COLLECT(exe, Tree('adj'),
                upx_exclude=[],
                name='__main__')
 
-os.rename('.\dist\__main__\__main__', r'.\dist\__main__\adj.exe')
+os.rename(r'.\dist\__main__\__main__.exe', r'.\dist\__main__\adj.exe')
 os.rename(r'.\dist\__main__', r'.\dist\adj_package')
