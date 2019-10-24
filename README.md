@@ -31,8 +31,8 @@ Please make sure to update tests as appropriate.
 ## License
 
 ## Authors
-Sam Hermes: hermesboots
+[Sam Hermes](https://github.com/hermesboots)
 
-Kyle Litscher: klitscher
+[Kyle Litscher](https://github.com/klitscher)
 
-Rory Fahy: rmf10003
+[Rory Fahy](https://github.com/rmf10003)
