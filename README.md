@@ -46,7 +46,10 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
-## License
+## External Libraries
+
+1. [BASS](http://www.un4seen.com/)
+2. [Kivy](https://kivy.org/#home)
 
 ## Authors
 [Sam Hermes](https://github.com/hermesboots)
