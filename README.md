@@ -16,7 +16,7 @@ Download the version that matches your operating system and extract the contents
 
 Linux
 ```
-user$ ./runAdj
+user$ ./adj.exe
 ```
 
 Mac
