@@ -32,5 +32,7 @@ Please make sure to update tests as appropriate.
 
 ## Authors
 Sam Hermes: hermesboots
+
 Kyle Litscher: klitscher
+
 Rory Fahy: rmf10003
