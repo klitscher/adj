@@ -9,6 +9,7 @@ import os.path
 
 if adj.platform.os == 'mac':
     multiprocessing.set_start_method('spawn')
+    multiprocessing.freeze_support()
 elif adj.platform.os == 'windows':
     multiprocessing.freeze_support()
     ctypes.windll.shcore.SetProcessDpiAwareness(1)
