@@ -14,7 +14,7 @@ Download the version that matches your operating system and extract the contents
 
 ### Start AmbientDJ
 
-Move into the adj_package folder which contains all the files. Then do the following depeding on you operation system: 
+Move into the adj_package folder which contains all the files. Then do the following depeding on you operating system: 
 
 Linux
 ```
