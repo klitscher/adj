@@ -45,7 +45,7 @@ coll = COLLECT(exe,
                upx_exclude=[],
                name='__main__')
 
-os.rename('./dist/__main__/__main__', './dist/__main__/adj.exe')
+os.rename('./dist/__main__/__main__', './dist/__main__/adjrun')
 os.rename('./dist/__main__', './dist/adj_package')
 
 os.mkdir('dist/adj_package/tk')
