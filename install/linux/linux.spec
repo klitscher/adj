@@ -2,19 +2,19 @@
 
 import os
 
-os.system('cp adj/install/linux/libtags.so adj/install/linux/libbass.so adj/')
 
 block_cipher = None
+base = os.getcwd() + '/'
 
-
-a = Analysis(['adj/__main__.py'],
-             pathex=['/home/kyle/test'],
-             binaries=[('./adj/libbass.so', '.'), ('./adj/libtags.so','.')],
-             datas=[('./adj/gui/config.kv', 'adj/gui/'),
-                    ('./adj/gui/adj.kv', 'adj/gui/'),
-                    ('./adj/gui/left.kv', 'adj/gui/'),
-                    ('./adj/gui/right.kv', 'adj/gui/'),
-                    ('./adj/allmoods.txt', 'adj/')],
+a = Analysis([base + 'adj/__main__.py'],
+             pathex=[base + '/home/kyle/test'],
+             binaries=[(base + './adj/install/linux/libbass.so', '.'),
+                       (base + './adj/install/linux/libtags.so','.')],
+             datas=[(base + './adj/gui/config.kv', 'adj/gui/'),
+                    (base + './adj/gui/adj.kv', 'adj/gui/'),
+                    (base + './adj/gui/left.kv', 'adj/gui/'),
+                    (base + './adj/gui/right.kv', 'adj/gui/'),
+                    (base + './adj/allmoods.txt', 'adj/')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
