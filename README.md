@@ -23,7 +23,7 @@ user$ ./adj.exe
 
 Mac
 ```
-Double click adj.exe
+Double click adjrun
 ```
 
 Windows
