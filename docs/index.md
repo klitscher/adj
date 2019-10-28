@@ -4,40 +4,33 @@ AmbientDJ is a tool for Dungeons and Dragons DMs to create a more immersive expe
 
 | Initial Setup | Main Screen |
 | ------------- | ----------- |
-| <img src="https://github.com/klitscher/adj/blob/master/docs/images/Initial_setup.png?raw=true" width="250" height="250"/> | <img src="https://github.com/klitscher/adj/blob/master/docs/images/main_view.png?raw=true" width="250" height="250"/> |
+|  | <img src="https://github.com/klitscher/adj/blob/master/docs/images/main_view.png?raw=true" width="250" height="250"/> |
 
-## Installation
+## Features
 
-Download the version that matches your operating system and extract the contents to a folder of your choice. 
+### Simple setup
 
-## Usage
+The only thing you need to do as a user is give us the location of your music library. AmbientDJ will do the rest! To make it even simpler, we prompt you for this the first time you run our program. After that, you never need to worry about it again!
 
-### Start AmbientDJ
+<img src="https://github.com/klitscher/adj/blob/master/docs/images/Initial_setup.png?raw=true" width="250" height="250"/>
 
-Move into the adj_package folder which contains all the files. Then do the following depeding on you operating system: 
+### Exclude moods you don't want to hear
 
-Linux
-```
-user$ ./adj.exe
-```
+We provide you the flexability to be a god of moods. Our user's feel the true power of binary choice: `left click` a mood to only play songs that include that mood. `right click` a mood to only play songs that exclude that mood. Mix and match to play songs that include some moods but not others!
 
-Mac
-```
-Double click adjrun
-```
+| Include Mood | Exclude Mood | WomboCombo |
+| ------------ | ------------ | ---------- |
+| <img src="https://github.com/klitscher/adj/blob/master/docs/images/included.png?raw=true" width="250" height="250"/>
+ | <img src="https://github.com/klitscher/adj/blob/master/docs/images/excluded.png?raw=true" width="250" height="250"/> | <img src="https://github.com/klitscher/adj/blob/master/docs/images/moodCombo.png?raw=true" width="250" height="250"/> |
+  
 
-Windows
-```
-Double click adj.exe
-```
-### Use AmbientDJ
+### Play, Pause and Skip songs
 
-1. Follow prompt if this is your first time running AmbientDJ: This will tell AmbientDJ where to find your music files.
-2. `Left click` on a mood to create a playlist of songs which have that mood and/or `Right click` on a mood to create a playlist of songs which DO NOT have that mood
+## About
 
-| Include Mood | Exclude Mood |
-| ------------ | ------------ |
-| <img src="https://github.com/klitscher/adj/blob/master/docs/images/included.png?raw=true" width="250" height="250"/> | <img src="https://github.com/klitscher/adj/blob/master/docs/images/excluded.png?raw=true" width="250" height="250"/> |
+
+
+
 
 3. Click `Activate` to start playing proposed playlist
 4. Use `Play\Pause` and `Next Song` to control the music
