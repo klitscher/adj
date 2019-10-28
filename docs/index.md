@@ -2,9 +2,7 @@
 
 AmbientDJ is a tool for Dungeons and Dragons DMs to create a more immersive experience for their players through ambient background music. 
 
-| Initial Setup | Main Screen |
-| ------------- | ----------- |
-|  | <img src="https://github.com/klitscher/adj/blob/master/docs/images/main_view.png?raw=true" width="250" height="250"/> |
+<img src="https://github.com/klitscher/adj/blob/master/docs/images/examplePlaying.png?raw=true" width="250" height="250"/> |
 
 ## Features
 
@@ -18,13 +16,14 @@ The only thing you need to do as a user is give us the location of your music li
 
 We provide you the flexability to be a god of moods. Our user's feel the true power of binary choice: `left click` a mood to only play songs that include that mood. `right click` a mood to only play songs that exclude that mood. Mix and match to play songs that include some moods but not others!
 
-| Include Mood | Exclude Mood | WomboCombo |
+| Include Mood | Exclude Mood | Mood Combo |
 | ------------ | ------------ | ---------- |
-| <img src="https://github.com/klitscher/adj/blob/master/docs/images/included.png?raw=true" width="250" height="250"/>
- | <img src="https://github.com/klitscher/adj/blob/master/docs/images/excluded.png?raw=true" width="250" height="250"/> | <img src="https://github.com/klitscher/adj/blob/master/docs/images/moodCombo.png?raw=true" width="250" height="250"/> |
+| <img src="https://github.com/klitscher/adj/blob/master/docs/images/included.png?raw=true" width="250" height="250"/> | <img src="https://github.com/klitscher/adj/blob/master/docs/images/excluded.png?raw=true" width="250" height="250"/> | <img src="https://github.com/klitscher/adj/blob/master/docs/images/moodCombo.png?raw=true" width="250" height="250"/> |
   
 
 ### Play, Pause and Skip songs
+
+
 
 ## About
 
