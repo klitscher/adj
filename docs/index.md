@@ -2,7 +2,7 @@
 
 AmbientDJ is a tool for Dungeons and Dragons DMs to create a more immersive experience for their players through ambient background music. 
 
-<img src="https://github.com/klitscher/adj/blob/master/docs/images/examplePlaying.png?raw=true" width="250" height="250"/> |
+<img src="https://github.com/klitscher/adj/blob/master/docs/images/examplePlaying.png?raw=true" width="250" height="250"/>
 
 ## Features
 
