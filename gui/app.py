@@ -31,12 +31,6 @@ class MainWidget (kivy.uix.boxlayout.BoxLayout):
     def on_start(self):
         """Initialization function for widgets"""
         self.db = adj.db.DataBase(os.path.join(adj.path, 'adj.db'))
-        if not self.db.populated():
-            proc = multiprocessing.Process(target=adj.gui.firstrun.subProcMain)
-            proc.start()
-            proc.join()
-            if not self.db.populated():
-                sys.exit(1)
         self._playlist = self.playlist
 
     def on_playlist(self, _, playlist):
