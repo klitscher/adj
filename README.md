@@ -18,7 +18,7 @@ Move into the adj_package folder which contains all the files. Then do the follo
 
 Linux
 ```
-user$ ./adj.exe
+user$ ./adjrun
 ```
 
 Mac
