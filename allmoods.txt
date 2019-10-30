@@ -158,7 +158,7 @@ Owlboy
 65 dread, tension
 66 climax, tension
 67 none
-68 quiet, relief, victory
+68 quiet, victory
 %
 The Witcher 3: Wild Hunt
 01 adventure, discovery
