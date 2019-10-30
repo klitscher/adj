@@ -90,6 +90,76 @@ Ori and the Blind Forest
 31 hope
 32 none
 %
+Owlboy
+01 safety, victory
+02 none
+03 nobility, quiet, safety
+04 adventure, wilderness
+05 none
+06 tension
+07 sadness, safety
+08 adventure, rising
+09 cave, tension
+10 party, quirk
+11 carnival, quirk
+12 cave
+13 military, quiet, stealth
+14 party, quirk
+15 action, danger
+16 action, climax, danger
+17 none
+18 discovery
+19 stealth
+20 discovery, mystery
+21 happiness
+22 quiet, rising, wilderness
+23 bustle, quirk, town
+24 quiet, reverence
+25 cave
+26 haste, quiet
+27 wilderness
+28 quiet, stealth
+29 none
+30 none
+31 none
+32 danger
+33 military
+34 failure
+35 danger, tension
+36 boss, danger
+37 action, danger
+38 action, danger, climax
+39 danger
+40 none
+41 military, quiet
+42 wilderness
+43 happiness, rising, safety
+44 safety, wilderness
+45 none
+46 danger, military
+47 danger, eeriness
+48 none
+49 none
+50 danger, quiet
+51 haste, rising
+52 quiet, reverence, wilderness
+53 mystery, quiet
+54 dread, quiet
+55 stealth, tension
+56 action, boss, climax
+57 eeriness, quiet
+58 happiness, quiet, relief, rising
+59 discovery, rising
+60 eeriness, quiet
+61 adventure, falling
+62 dread, reverence
+63 action, rising
+64 action, climax, danger
+65 dread, tension
+66 climax, tension
+67 none
+68 quiet, relief, victory
+%
 The Witcher 3: Wild Hunt
 01 adventure, discovery
 02 adventure, hope
