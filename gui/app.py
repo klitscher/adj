@@ -3,13 +3,17 @@ import adj
 import adj.db
 import adj.masterlist
 import adj.playlist
+import adj.gui.firstrun
 import adj.gui.leftwidget
 import adj.gui.rightwidget
 import kivy.app
 from kivy.config import Config
 import kivy.lang
 import kivy.uix.boxlayout
+import multiprocessing
 import os.path
+import sys
+
 
 Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 kivy.lang.Builder.load_file(os.path.join(adj.path, 'gui', 'adj.kv'))
@@ -23,6 +27,12 @@ class MainWidget (kivy.uix.boxlayout.BoxLayout):
     def on_start(self):
         """Initialization function for widgets"""
         self.db = adj.db.DataBase(os.path.join(adj.path, 'adj.db'))
+        if not self.db.populated():
+            proc = multiprocessing.Process(target=adj.gui.firstrun.subProcMain)
+            proc.start()
+            proc.join()
+            if not self.db.populated():
+                sys.exit(1)
         self.playlist = adj.playlist.Playlist()
 
     def switchPlaylist(self, playlist):

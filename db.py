@@ -142,3 +142,11 @@ class DataBase:
 
         cursor = self._conn.execute(mood_sql, (mood,))
         return cursor.lastrowid
+
+    def populated(self):
+        query = '''
+            SELECT count(*) FROM sqlite_master
+            WHERE type = "table" and name in (?, ?, ?)
+        '''
+        cursor = self._conn.execute(query, ('music', 'moods', 'music_moods'))
+        return cursor.fetchone()[0] >= 3
