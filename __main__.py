@@ -15,8 +15,4 @@ elif adj.platform.os == 'windows':
     ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
 adj.audio.init()
-if not os.path.isfile(os.path.join(adj.path, 'adj.db')):
-    proc = multiprocessing.Process(target=adj.gui.firstrun.subProcMain)
-    proc.start()
-    proc.join()
 adj.gui.app.MainApp().run()

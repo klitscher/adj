@@ -29,8 +29,8 @@ exe = EXE(pyz,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=True )
-coll = COLLECT(exe, Tree('adj'),
+          console=False )
+coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
                a.datas,
