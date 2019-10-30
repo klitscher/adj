@@ -25,6 +25,9 @@ Mac
 ```
 Double click adjrun
 ```
+```
+In order to run on mac, the user must allow execution of the dynamic libraries in the Security and Privacy section of the System Preferences application
+```
 
 Windows
 ```
