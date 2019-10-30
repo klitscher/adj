@@ -7,11 +7,9 @@ import multiprocessing
 import os.path
 
 
-if adj.platform.os == 'mac':
-    multiprocessing.set_start_method('spawn')
-    multiprocessing.freeze_support()
-elif adj.platform.os == 'windows':
-    multiprocessing.freeze_support()
+multiprocessing.set_start_method('spawn')
+multiprocessing.freeze_support()
+if adj.platform.os == 'windows':
     ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
 adj.audio.init()
