@@ -95,6 +95,8 @@ class Playlist (list):
                 self.onEnd(self[self.index])
         elif self.__len__() == 0:
             self.channel = None
+        elif self.onEnd is not None:
+            self.onEnd(None)
 
     def reverse(self):
         """Reverse the order of the playlist.

@@ -26,6 +26,9 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
     @mainthread
     def songChanged(self, song):
         """Change the displayed and playing song"""
+        if song is None:
+            self.ids.play.text = 'Stopped'
+            return
         self.ids.title.text = song.title
         self.ids.album.text = song.album
         self.ids.play.text = 'Pause'
@@ -34,6 +37,8 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
         """Plays or pauses a song based on its state"""
         if self.playlist.channel is None:
             return
+        if self.playlist.channel.stopped:
+            return            
         if self.playlist.channel.playing == True:
             self.playlist.channel.pause()
             self.ids.play.text = 'Play'
