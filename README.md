@@ -1,5 +1,7 @@
 # AmbientDJ (adj)
 
+[Check out our landing page!](https://kylelitscher.wixsite.com/ambientdj)
+
 AmbientDJ is a tool for Dungeons and Dragons DMs to create a more immersive experience for their players. AmbientDJ allows DMs to create a playlist on the fly that fits the "mood" of whatever situation is currently happening: danger, battle, tavern, city, climax etc. AmbientDJ will then generate a playlist of the user's songs which match those "moods" and commence playing it. 
 
 | Initial Setup | Main Screen |
