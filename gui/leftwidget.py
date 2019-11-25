@@ -8,6 +8,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.widget import Widget
 from kivy.properties import StringProperty
 
+
 class LeftWidget (kivy.uix.boxlayout.BoxLayout):
     """Left side of gui class
     - Inherits from BoxLayout class
@@ -20,8 +21,8 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
         self.mood_list = sorted(self.db.getMoods())
         for mood in self.mood_list:
             button = FilterButton(text=mood,
-                            width=dp(100),
-                            size_hint=(None, .1))
+                                  width=dp(100),
+                                  size_hint=(None, .1))
             button.bind(on_press=self.filter)
             self.ids.mood_grid.add_widget(button)
 
@@ -44,8 +45,8 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
         if self.playlist.channel is None:
             return
         if self.playlist.channel.stopped:
-            return            
-        if self.playlist.channel.playing == True:
+            return
+        if self.playlist.channel.playing is True:
             self.playlist.channel.pause()
             self.ids.play.text = 'Play'
         else:
@@ -91,6 +92,7 @@ class LeftWidget (kivy.uix.boxlayout.BoxLayout):
                 childButton.filterState = 'available'
             else:
                 childButton.filterState = 'unavailable'
+
 
 class FilterButton(ButtonBehavior, Widget):
     """Class for custom buttons"""
