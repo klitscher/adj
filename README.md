@@ -61,6 +61,6 @@ Please make sure to update tests as appropriate.
 ## Authors
 [Sam Hermes](https://github.com/hermesboots)
 
-[Kyle Litscher](https://github.com/klitscher)
+[Kyle Litscher](https://github.com/klitscher) | [LinkedIn](https://www.linkedin.com/in/kylelitscher/) | [Twitter](https://twitter.com/Coding_KGL)
 
 [Rory Fahy](https://github.com/rmf10003)
