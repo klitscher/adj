@@ -59,7 +59,8 @@ Please make sure to update tests as appropriate.
 2. [Kivy](https://kivy.org/#home)
 
 ## Authors
-[Sam Hermes](https://github.com/hermesboots)
+[Sam Hermes](https://github.com/hermesboots) | [GitHub](https://github.com/HermesBoots/) | [LinkedIn](https://www.linkedin.com/in/samuel-hermes/) | [Twitter](https://twitter.com/SamHermesBoots)
+
 
 [Kyle Litscher](https://github.com/klitscher) | [LinkedIn](https://www.linkedin.com/in/kylelitscher/) | [Twitter](https://twitter.com/Coding_KGL)
 
