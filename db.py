@@ -43,9 +43,9 @@ class DataBase:
         attribute is used to remove moods not listed there and add ones that
         are.
         """
-        queryDelete = "DELETE FROM music_moods WHERE track = ? and mood in ({})"
-        queryInsert = "INSERT INTO music_moods (track, mood) VALUES {}"
-        querySelect = "SELECT mood FROM music_moods WHERE track = ?"
+        queryDelete = 'DELETE FROM music_moods WHERE track = ? and mood in ({})'
+        queryInsert = 'INSERT INTO music_moods (track, mood) VALUES {}'
+        querySelect = 'SELECT mood FROM music_moods WHERE track = ?'
         newMoods = song.moods
         cursor = self._conn.execute(querySelect, (song.id,))
         oldMoods = set(row[0] for row in cursor.fetchall())
@@ -69,26 +69,29 @@ class DataBase:
 
     def createTables(self):
         """Method to create tables in database"""
-        music_sql = """CREATE TABLE IF NOT EXISTS music (
-            id INTEGER PRIMARY KEY,
-            title TEXT NOT NULL,
-            album TEXT NOT NULL,
-            number INTEGER NOT NULL,
-            path TEXT NOT NULL
+        music_sql = '''
+            CREATE TABLE IF NOT EXISTS music (
+                id INTEGER PRIMARY KEY,
+                title TEXT NOT NULL,
+                album TEXT NOT NULL,
+                number INTEGER NOT NULL,
+                path TEXT NOT NULL
             )
-            """
-        mood_sql = """CREATE TABLE IF NOT EXISTS moods (
-            mood TEXT PRIMARY KEY
+        '''
+        mood_sql = '''
+            CREATE TABLE IF NOT EXISTS moods (
+                mood TEXT PRIMARY KEY
             )
-            """
-        association_sql = """CREATE TABLE IF NOT EXISTS music_moods (
-            mood TEXT,
-            track INTEGER,
-            PRIMARY KEY (mood, track)
-            FOREIGN KEY(mood) REFERENCES moods ON DELETE CASCADE,
-            FOREIGN KEY(track) REFERENCES music ON DELETE CASCADE
+        '''
+        association_sql = '''
+            CREATE TABLE IF NOT EXISTS music_moods (
+                mood TEXT,
+                track INTEGER,
+                PRIMARY KEY (mood, track)
+                FOREIGN KEY(mood) REFERENCES moods ON DELETE CASCADE,
+                FOREIGN KEY(track) REFERENCES music ON DELETE CASCADE
             )
-            """
+        '''
         self._conn.execute(music_sql)
         self._conn.execute(mood_sql)
         self._conn.execute(association_sql)
@@ -158,9 +161,10 @@ class DataBase:
         pathToMusic: path to the song in the user's music library
         pathToDb: path to the sqlite database
         """
-        row_sql = """INSERT INTO music(title, album, number, path)
+        row_sql = '''
+            INSERT INTO music(title, album, number, path)
             VALUES(?, ?, ?, ?)
-            """
+        '''
         cursor = self._conn.execute(
             row_sql,
             (title, album, trackNumber, pathToMusic)
@@ -171,7 +175,7 @@ class DataBase:
         """Method to insert a mood into db
         mood: mood to be added to db
         """
-        mood_sql = """INSERT INTO moods VALUES(?)"""
+        mood_sql = 'INSERT INTO moods VALUES(?)'
 
         cursor = self._conn.execute(mood_sql, (mood,))
         return cursor.lastrowid
